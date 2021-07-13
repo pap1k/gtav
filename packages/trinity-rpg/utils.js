@@ -1,47 +1,46 @@
+const lvls = require("./lvls")
+
 var exports = module.exports = {}
 exports.findPlayerByIdOrNickname = function (playerName){
     if (playerName == parseInt(playerName))
-        return mp.players.at(playerName);
+        return mp.players.at(playerName)
     else {
-        let foundPlayer = null;
-        
-        mp.players.every((_player) => {
-        if (_player.name.startsWith(playerName)) {
-            foundPlayer = _player;
-            return false;
+        let foundPlayers = []
+
+        for(let _player of mp.players){
+            if (_player.name.startsWith(playerName)){
+                foundPlayers.append(_player)
+            }
         }
-        return true;
-        });
         
-        return foundPlayer;
+        return foundPlayers.length == 1 ? foundPlayers[0] : foundPlayers
     }
 }
 exports.sendToAdmins = function(text){
     mp.players.forEach((_player) => {
-        if (_player.name === playerName) {
-            foundPlayer = _player;
-            return;
+        if(_player.getVariable('access_level') >= lvls.ALL_ADMINS) {
+            _player.outputChatBox(text)
         }
-        });
+    })
 }
 exports.log = function(text, type){
     if(!type) type = "info"
-    let color;
+    let color
     switch(type){
         case "info":
             color = "\x1b[1m"
-            break;
+            break
         case "warn":
             color = "\x1b[33m"
-            break;
+            break
         case "err":
-            color = "\x1b[32m"
-            break;
+            color = "\x1b[31m"
+            break
         case "done":
             color = "\x1b[32m"
-            break;
+            break
         default:
-            break;
+            break
     }
     console.log(color+"["+type.toUpperCase()+"]\x1b[0m "+text)
 }

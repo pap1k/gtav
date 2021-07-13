@@ -33,14 +33,16 @@ exports.obj = [
         execute: (player, _, target) => {
             if(target){
                 const t = findPlayerByIdOrNickname(target)
-                if(t){
-                    Player.findOne({rgid: t.rgscId, name: t.name}, (err, doc) => {
-                        doc.player_level = lvls.UNIQUE_LEVEL
-                        doc.save()
-                    })
-                }
-                else
-                    player.outputChatBox("Не найден такой игрок")
+                
+                if(!t)
+                    return player.outputChatBox("Не найден такой игрок")
+                if(t.length)
+                    return player.outputChatBox("Найдено несколько таких игроков")
+
+                Player.findOne({rgid: t.rgscId, name: t.name}, (err, doc) => {
+                    doc.player_level = lvls.UNIQUE_LEVEL
+                    doc.save()
+                })  
             }
             else
                 player.outputChatBox("Подсказка: /makeunique [id или часть ника]")
@@ -64,5 +66,10 @@ exports.obj = [
             else
                 player.outputChatBox("Подсказка: /destroy [id или часть ника]")
         }
+    },
+    {
+        triggers: ["log"],
+        lvl:  lvls.PLAYER,
+        execute: player => console.log(player)
     }
 ]

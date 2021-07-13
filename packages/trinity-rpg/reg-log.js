@@ -38,4 +38,6 @@ mp.events.add('onPlayerLogin', async (player, data) => {
             player.setVariable('level', level.UNIQUE_LEVEL)
         player.call('hideAllBrowsers')
     }
+    else
+        player.call("showPassError", "э бля пароль неверный нахуй")
 })

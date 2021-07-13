@@ -16,6 +16,10 @@ const govno = function(e){
 
 inp.addEventListener("keydown", govno)
 inp2.addEventListener("keydown", govno)
+mp.events.add('showPassError'), txt => {
+    alert(txt)
+    inp.value = ""
+}
 
 function login(){
     if(inp.value.length > 4){

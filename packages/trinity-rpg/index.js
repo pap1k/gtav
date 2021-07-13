@@ -8,16 +8,16 @@ const utils = require("./utils")
 async function start(){
     try{
         await mongoose.connect(
-            `mongodb+srv://${db.user}:${db.password}@gtavtest.j8y3y.mongodb.net/gtav`,
+            `${db.protocol}://${db.user}:${db.password}@${db.server}/${db.db}`,
             {
                 useNewUrlParser: true,
                 useFindAndModify: false,
-                useUnifieldTopology: true
+                useUnifiedTopology: true
             }
-        )
+        , e => console.log(e))
         utils.log("Подключение к БД успешно", "done")
     } catch(e){
-        utils.log(e, "err")
+        throw "Пизда с БД"
     }
     
 }

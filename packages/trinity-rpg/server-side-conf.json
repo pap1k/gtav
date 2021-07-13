@@ -1,6 +1,9 @@
 {
     "db":{
+        "protocol": "mongodb+srv",
         "user": "papercut",
-        "password": "A2XpDsrRuE7rHgX"
+        "password": "A2XpDsrRuE7rHgX",
+        "server": "gtavtest.j8y3y.mongodb.net",
+        "db": "GtaVTest"
     }
 }
