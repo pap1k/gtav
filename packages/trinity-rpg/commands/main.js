@@ -26,7 +26,7 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                                     return cmd.hint ? player.outputChatBox("Подсказка: "+cmd.hint) : console.log("dick")
 
                                 //чекаем на челика
-                                const foundPlayer = findPlayerByIdOrNickname(params[1])
+                                const foundPlayer = utils.findPlayerByIdOrNickname(params[1])
 
                                 if (!foundPlayer)
                                     return player.outputChatBox("По указанным параметрам не найдено игроков")
