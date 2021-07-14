@@ -33,6 +33,7 @@ function isMuted(p){
             return false
         }
         p.outputChatBox(`У вас мут еще ${t} мс. выданный по причине ${v.reason}`)
+        return true
     }
-    return true
+    return false
 }
