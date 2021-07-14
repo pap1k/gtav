@@ -25,7 +25,7 @@ function localChat(player, fullcmd){
 }
 
 function isMuted(p){
-    const v = p.getVariable('muted') ? true : false
+    const v = p.getVariable('muted')
     if(v){
         const t = (v.muteTimeStamp+v.muteDuration)-Date.now()
         if(t <= 0){
@@ -33,6 +33,7 @@ function isMuted(p){
             return false
         }
         p.outputChatBox(`У вас мут еще ${t} мс. выданный по причине ${v.reason}`)
+        return true
     }
-    return v
+    return false
 }

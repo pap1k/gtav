@@ -5,6 +5,5 @@
 	"stream-distance" : 500.0,
 	"announce" : false,
 	"csharp" : "disabled",
-	"port": 22005,
-	"bind": "25.87.161.22"
+	"port": 22005
 }

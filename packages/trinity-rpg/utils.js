@@ -5,19 +5,19 @@ exports.findPlayerByIdOrNickname = function (playerName){
     if (playerName == parseInt(playerName))
         return mp.players.at(playerName)
     else {
-        let foundPlayers = []
+        let foundPlayers = null
         mp.players.forEach(_player => {
-            if (_player.name.startsWith(playerName)){
-                foundPlayers.append(_player)
+            if (_player.name.toLowerCase().startsWith(playerName.toLowerCase())){
+                foundPlayers.push(_player)
             }
         })
         
-        return foundPlayers.length == 1 ? foundPlayers[0] : foundPlayers
+        return (foundPlayers && foundPlayers.length == 1) ? foundPlayers[0] : foundPlayers
     }
 }
 exports.sendToAdmins = function(text){
-    mp.players.forEach((_player) => {
-        if(_player.getVariable('access_level') >= lvls.ALL_ADMINS) {
+    mp.players.forEach(_player => {
+        if(_player.getVariable('level') >= lvls.ALL_ADMINS) {
             _player.outputChatBox(text)
         }
     })
