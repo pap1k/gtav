@@ -17,6 +17,7 @@ exports.obj = [
                 return player.outputChatBox("Время должно быть числом")
             
             targ.setVariable('muted', {state: true, muteTimeStamp: Date.now(), muteDuration: time, reason})
+
             targ.outputChatBox(`Администратор ${player.name} выдал вам мут на ${time} минут. Причина: ${reason}`)
             sendToAdmins(`Администратор ${player.name} выдал мут игроку ${targ.name} на ${time} минут. Причина: ${reason}`)
         }
@@ -31,6 +32,7 @@ exports.obj = [
                 return targ.outputChatBox("Указанный игрок не находится в муте")
             
             targ.setVariable('muted', false)
+            
             targ.outputChatBox(`Администратор ${player.name} снял вам мут`)
             sendToAdmins(`Администратор ${player.name} снял мут игроку ${targ.name}`)
         }

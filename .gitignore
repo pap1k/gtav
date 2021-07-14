@@ -1,2 +1,2 @@
-/packages/trinity-rpg/node_modules
-/dotnet
+node_modules/
+dotnet/
