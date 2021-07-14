@@ -7,8 +7,8 @@ exports.findPlayerByIdOrNickname = function (playerName){
     else {
         let foundPlayers = null
         mp.players.forEach(_player => {
-            if (_player.name.startsWith(playerName)){
-                foundPlayers.append(_player)
+            if (_player.name.toLowerCase().startsWith(playerName.toLowerCase())){
+                foundPlayers.push(_player)
             }
         })
         
