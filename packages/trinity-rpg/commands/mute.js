@@ -29,10 +29,10 @@ exports.obj = [
         hint: "/unmute [id или часть ника]",
         execute: (player, _, targ) => {
             if(!targ.getVariable('muted'))
-                return targ.outputChatBox("Указанный игрок не находится в муте")
+                return player.outputChatBox("Указанный игрок не находится в муте")
             
             targ.setVariable('muted', false)
-            
+
             targ.outputChatBox(`Администратор ${player.name} снял вам мут`)
             sendToAdmins(`Администратор ${player.name} снял мут игроку ${targ.name}`)
         }
