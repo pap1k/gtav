@@ -1,7 +1,7 @@
 //const db = require("./db")
-const Player = require("./db_models/Player")
-const {sendToAdmins} = require("./utils")
-const level = require("./lvls")
+const Player = require("../db_models/Player")
+const {sendToAdmins} = require("../utils")
+const level = require("../lvls")
 
 mp.events.add('playerJoin', async (player) => {
     const p = await Player.find({name: player.name})

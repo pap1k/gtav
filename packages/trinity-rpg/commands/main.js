@@ -13,8 +13,8 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                 if(cmd.lvl == undefined) return utils.log("Error of loading "+file+" in commands. Trigger: "+cmd.triggers[0]+" Cant find 'lvl' key.", "warn")
 
                 cmd.triggers.forEach(trigger => {
+                    cmdList.push(trigger)
                     mp.events.addCommand(trigger, (player, ...params)=>{
-                        cmdList.append(trigger)
                         if(player.getVariable('level') >= cmd.lvl){
                             //если в конструкторе указание количество параметров команды
                             if(cmd.args && params.length-1 < cmd.args)

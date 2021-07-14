@@ -2,7 +2,16 @@ const inp = document.getElementById("pass")
 const inp2 = document.getElementById("pass_2")
 const deb = docu.getElementById("debug")
 
-const govno = function(e){
+inp.addEventListener("keydown", govno)
+inp2.addEventListener("keydown", govno)
+
+mp.events.add('showPassError'), txt => {
+    alert(txt)
+    inp.value = ""
+}
+
+
+function govno(e){
     if(e.key == "Enter"){
         if(inp2)
             reg()
@@ -16,14 +25,6 @@ const govno = function(e){
     }
     else
     deb.value = "passed "+e.key
-}
-
-inp.addEventListener("keydown", govno)
-inp2.addEventListener("keydown", govno)
-
-mp.events.add('showPassError'), txt => {
-    alert(txt)
-    inp.value = ""
 }
 
 function showPass(){
