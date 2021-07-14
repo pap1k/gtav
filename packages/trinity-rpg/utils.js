@@ -16,8 +16,8 @@ exports.findPlayerByIdOrNickname = function (playerName){
     }
 }
 exports.sendToAdmins = function(text){
-    mp.players.forEach((_player) => {
-        if(_player.getVariable('access_level') >= lvls.ALL_ADMINS) {
+    mp.players.forEach(_player => {
+        if(_player.getVariable('level') >= lvls.ALL_ADMINS) {
             _player.outputChatBox(text)
         }
     })
