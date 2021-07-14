@@ -5,14 +5,14 @@ exports.findPlayerByIdOrNickname = function (playerName){
     if (playerName == parseInt(playerName))
         return mp.players.at(playerName)
     else {
-        let foundPlayers = []
+        let foundPlayers = null
         mp.players.forEach(_player => {
             if (_player.name.startsWith(playerName)){
                 foundPlayers.append(_player)
             }
         })
         
-        return foundPlayers.length == 1 ? foundPlayers[0] : foundPlayers
+        return (foundPlayers && foundPlayers.length == 1) ? foundPlayers[0] : foundPlayers
     }
 }
 exports.sendToAdmins = function(text){
