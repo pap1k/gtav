@@ -16,7 +16,7 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
 
                         if(player.getVariable('level') >= cmd.lvl){
                             //если в конструкторе указание количество параметров команды
-                            if(cmd.args && params.length < cmd.args+1)
+                            if(cmd.args && params.length-1 < cmd.args)
                                 return cmd.hint ? player.outputChatBox("Подсказка: "+cmd.hint) : console.log("dick")
 
                             //если в конструкторе есть указание
