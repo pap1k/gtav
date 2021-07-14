@@ -1,4 +1,3 @@
-const { MongoTimeoutError } = require("mongodb")
 const lvls = require("../lvls")
 const {sendToAdmins} = require("../utils")
 var exports = module.exports = {}
