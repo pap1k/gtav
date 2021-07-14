@@ -6,12 +6,11 @@ exports.findPlayerByIdOrNickname = function (playerName){
         return mp.players.at(playerName)
     else {
         let foundPlayers = []
-
-        for(let _player of mp.players){
+        mp.players.forEach(_player => {
             if (_player.name.startsWith(playerName)){
                 foundPlayers.append(_player)
             }
-        }
+        })
         
         return foundPlayers.length == 1 ? foundPlayers[0] : foundPlayers
     }
