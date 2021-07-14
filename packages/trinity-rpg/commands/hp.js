@@ -14,6 +14,8 @@ mp.events.addCommand('sethp', (player, fullcmd, target, hp) => {
         const foundPlayer = utils.findPlayerByIdOrNickname(target)
         if (!foundPlayer)
             return player.outputChatBox("По указанным параметрам не найдено игроков")
+        if(foundPlayer.length)
+            return player.outputChatBox("По указанным параметрам найдено несколько игроков")
 
         foundPlayer.health = parseInt(hp)
         player.outputChatBox("Вы установили HP игрока "+foundPlayer.name+" на "+hp)
