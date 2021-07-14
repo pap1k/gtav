@@ -1,6 +1,6 @@
 //init Commands file
 require('./commands/main')
-require("./reg-log")
+require("./events/main")
 const db = require("./server-side-conf.json").db
 //const db = require('./db')
 const mongoose = require("mongoose")

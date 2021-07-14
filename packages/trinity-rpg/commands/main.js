@@ -1,5 +1,6 @@
 const normalizedPath = require("path").join(__dirname);
 const utils = require("../utils")
+let cmdList = []
 require("fs").readdirSync(normalizedPath).forEach(function(file) {
     if(file != "main.js"){
         var module = require("./" + file)
@@ -12,8 +13,8 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                 if(cmd.lvl == undefined) return utils.log("Error of loading "+file+" in commands. Trigger: "+cmd.triggers[0]+" Cant find 'lvl' key.", "warn")
 
                 cmd.triggers.forEach(trigger => {
+                    cmdList.push(trigger)
                     mp.events.addCommand(trigger, (player, ...params)=>{
-
                         if(player.getVariable('level') >= cmd.lvl){
                             //если в конструкторе указание количество параметров команды
                             if(cmd.args && params.length-1 < cmd.args)
@@ -50,3 +51,10 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
     }
   });
 utils.log("Команды проинициализированны", "done")
+
+mp.events.add("playerCommand", (player, command) =>{
+    const args = command.split(/[ ]+/);
+	const commandName = args.splice(0, 1)[0];
+    if(cmdList.indexOf(commandName) == -1)
+        player.outputChatBox("SERVER: Неизвестная команда") 
+})

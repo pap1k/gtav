@@ -1,7 +1,17 @@
 const inp = document.getElementById("pass")
 const inp2 = document.getElementById("pass_2")
+const deb = docu.getElementById("debug")
 
-const govno = function(e){
+inp.addEventListener("keydown", govno)
+inp2.addEventListener("keydown", govno)
+
+mp.events.add('showPassError'), txt => {
+    alert(txt)
+    inp.value = ""
+}
+
+
+function govno(e){
     if(e.key == "Enter"){
         if(inp2)
             reg()
@@ -9,16 +19,16 @@ const govno = function(e){
             login()
         return
     }
-    if(!/[A-Za-z0-9]/.test(e.key)){
+    if(!(/[A-Za-z0-9]/.test(e.key))){
         e.preventDefault()
+        deb.value = "prevented "+e.key
     }
+    else
+    deb.value = "passed "+e.key
 }
 
-inp.addEventListener("keydown", govno)
-inp2.addEventListener("keydown", govno)
-mp.events.add('showPassError'), txt => {
-    alert(txt)
-    inp.value = ""
+function showPass(){
+    document.getElementById("pass").type = document.getElementById("show-pass-check").checked ? "text" : "password"
 }
 
 function login(){

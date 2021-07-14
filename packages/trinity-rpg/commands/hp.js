@@ -8,7 +8,7 @@ mp.events.addCommand('hp', (player) => {
 mp.events.addCommand('sethp', (player, fullcmd, target, hp) => {
     if(target && hp){
         hp = parseInt(hp)
-        if(!hp || (hp <= 0 && hp > 100))
+        if(isNaN(hp) || (hp < 0 && hp > 100))
             return player.outputChatBox("Количество HP должно быть числом от 0 до 100")
 
         const foundPlayer = utils.findPlayerByIdOrNickname(target)
