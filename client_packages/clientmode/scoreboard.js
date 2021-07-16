@@ -1,4 +1,4 @@
-let browser = mp.browsers.new('package://scoreboard/index.html');
+let browser = mp.browsers.new('package://browser/scoreboard/index.html');
 browser.active = false;
 
 const KEY_CODE = 0x72; // F3
