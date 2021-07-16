@@ -18,13 +18,13 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                         if(player.getVariable('level') >= cmd.lvl){
                             //если в конструкторе указание количество параметров команды
                             if(cmd.args && params.length-1 < cmd.args)
-                                return cmd.hint ? player.outputChatBox("Подсказка: "+cmd.hint) : console.log("dick")
+                                return player.outputChatBox(cmd.hint ? "Подсказка: "+cmd.hint : "Передано неверное количество аргументов")
 
                             //если в конструкторе есть указание
                             if(cmd.target){
                                 //если оно-таки есть, значит, параметров должно быть 2. Если нет то иди нахуй с подсказкой
                                 if(params.length < 2)
-                                    return cmd.hint ? player.outputChatBox("Подсказка: "+cmd.hint) : console.log("dick")
+                                return player.outputChatBox(cmd.hint ? "Подсказка: "+cmd.hint : "Передано неверное количество аргументов")
 
                                 //чекаем на челика
                                 const foundPlayer = utils.findPlayerByIdOrNickname(params[1])

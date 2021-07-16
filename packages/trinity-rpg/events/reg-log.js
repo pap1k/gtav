@@ -2,6 +2,7 @@
 const Player = require("../db_models/Player")
 const {sendToAdmins} = require("../utils")
 const level = require("../lvls")
+const conf = require("./conf.json")
 
 mp.events.add('playerJoin', async (player) => {
     const p = await Player.find({name: player.name})
@@ -11,9 +12,13 @@ mp.events.add('playerJoin', async (player) => {
     }
     else{
         //player.call login
+        if(conf.allow_nologin){
+            player.setVariable('level', p[0].player_level)
+            return console.log(`[SERVER]: ${player.name} has joined the server!`)
+        }
         player.call("showLogin")
     }
-    console.log(`[SERVER]: ${player.name} has joined the server!`);
+    console.log(`[SERVER]: ${player.name} has joined the server!`)
 });
 
 mp.events.add('onPlayerRegister', async (player, data) => {

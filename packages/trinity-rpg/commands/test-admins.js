@@ -28,7 +28,7 @@ exports.obj = [
         }
     },
     {
-        triggers: ["makeuniqe"],
+        triggers: ["makeunique"],
         lvl: lvls.UNIQUE_LEVEL,
         execute: (player, _, target) => {
             if(target){

@@ -6,10 +6,11 @@ exports.obj = [
         triggers: ['id'],
         lvl: lvls.PLAYER,
         args: 1,
+        hint: "/id [id или часть ника]",
         execute: (player, _, arg) => {
             const foundplayer = findPlayerByIdOrNickname(arg)
             console.log(foundplayer, foundplayer.name)
-            player.outputChatBox(foundplayer.name)
+            player.outputChatBox(`${foundplayer.name} ID ${foundplayer.id}`)
         }
     }
 ]
