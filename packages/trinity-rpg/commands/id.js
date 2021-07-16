@@ -28,7 +28,7 @@ exports.obj = [
             mp.players.forEach(_player => {
                 list += _player.name+", "
             })
-            player.outputChatBox("Игроки в сети: "+list.substring(list.length-2))
+            player.outputChatBox("Игроки в сети: "+list.substring(0, list.length-2))
         }
     }
 ]

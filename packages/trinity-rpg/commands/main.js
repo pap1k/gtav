@@ -37,7 +37,8 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                                 
                                 params[1] = foundPlayer
                             }
-                            params[0] = trigger
+                            if(cmd.fulltext === undefined)
+                                params[0] = trigger
                             //TODO log using
                             cmd.execute(player, ...params)
                         }

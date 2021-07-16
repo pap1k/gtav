@@ -1,4 +1,5 @@
 const lvls = require("../lvls")
+const {isMuted} = require("../functions/getMuted")
 var exports = module.exports = {}
 
 mp.events.add('playerChat', localChat)
@@ -22,18 +23,4 @@ exports.obj = [
 function localChat(player, fullcmd){
     if(!isMuted(player))
         mp.players.broadcastInRange(player.position, 20, `${player.name} сказал: ${fullcmd}`)    
-}
-
-function isMuted(p){
-    const v = p.getVariable('muted')
-    if(v){
-        const t = (v.muteTimeStamp+v.muteDuration)-Date.now()
-        if(t <= 0){
-            p.setVariable('muted', false)
-            return false
-        }
-        p.outputChatBox(`У вас мут еще ${t} мс. выданный по причине ${v.reason}`)
-        return true
-    }
-    return false
 }
