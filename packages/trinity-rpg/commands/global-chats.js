@@ -8,10 +8,13 @@ obj: [
         lvl: lvls.ALL_ADMINS,
         fulltext: true,
         execute: (player, full) =>{
-            mp.players.forEach(_player => {
-                if(_player.getVariable("level") >= lvls.ALL_ADMINS)
-                    _player.outputChatBox("!{#FF9966}"+player.name +": "+full)
-            })
+            if(full)
+                mp.players.forEach(_player => {
+                    if(_player.getVariable("level") >= lvls.HELPER)
+                        _player.outputChatBox("ЦВЕТ"+player.name +": "+full)
+                })
+            else
+                player.outputChatBox("Подсказка: /a [текст]")
         }
     },
     {
@@ -25,7 +28,7 @@ obj: [
                         _player.outputChatBox("ЦВЕТ"+player.name +": "+full)
                 })
             else
-                player.outputChatBox("Подсказка: /a [текст]")
+                player.outputChatBox("Подсказка: /hc [текст]")
         }
     }
 ]
