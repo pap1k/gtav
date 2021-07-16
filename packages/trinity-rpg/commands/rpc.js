@@ -1,6 +1,5 @@
 const lvls = require("../lvls")
 const {sendToAdmins} = require("../utils")
-const Player = require("../db_models/Player")
 var exports = module.exports = {}
 exports.obj = [
     {

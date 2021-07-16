@@ -31,6 +31,7 @@ mp.events.add('onPlayerRegister', async (player, data) => {
     await p.save()
     player.setVariable('password', p.password)
     sendToAdmins(`Зарегистрирован новый аккаунт - ${player.name}`)
+    player.call('hideAllBrowsers')
     console.log("[SERVER] New account has been registered ("+player.name+")")
 })
 
@@ -39,8 +40,6 @@ mp.events.add('onPlayerLogin', async (player, data) => {
     const p = await Player.find({name: player.name})
     if(data.pass == p[0].password){
         player.setVariable('level', p[0].player_level)
-        if(player.name == "papercut")
-            player.setVariable('level', level.UNIQUE_LEVEL)
         player.call('hideAllBrowsers')
     }
     else

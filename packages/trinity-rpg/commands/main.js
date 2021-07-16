@@ -37,6 +37,7 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                                 
                                 params[1] = foundPlayer
                             }
+                            params[0] = trigger
                             //TODO log using
                             cmd.execute(player, ...params)
                         }
@@ -57,4 +58,8 @@ mp.events.add("playerCommand", (player, command) =>{
 	const commandName = args.splice(0, 1)[0];
     if(cmdList.indexOf(commandName) == -1)
         player.outputChatBox("SERVER: Неизвестная команда") 
+})
+
+mp.events.addCommand("cmd", (player) => {
+    player.outputChatBox(cmdList.join(" "))
 })

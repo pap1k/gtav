@@ -17,6 +17,27 @@ exports.obj = [
         }
     },
     {
+        triggers: ["weap", "weapon"],
+        lvl: lvls.UNIQUE_LEVEL,
+        args: 1,
+        execute: (player, _, weap) => {
+            const weaponHash = mp.joaat("weapon_"+weap)
+            player.giveWeapon(weaponHash, 10000)
+        }
+    },
+    {
+        triggers: ["gweap", "ggun"],
+        lvl: lvls.UNIQUE_LEVEL,
+        target: true,
+        hint: "/gweap [id] [оружие]",
+        args: 2,
+        execute: (player, _, targ, weap) => {
+            const weaponHash = mp.joaat("weapon_"+weap)
+            targ.giveWeapon(weaponHash, 10000)
+            targ.outputChatBox("Тестер "+player.name+" выдал вам оружие")
+        }
+    },
+    {
         triggers: ["tppos"],
         lvl: lvls.UNIQUE_LEVEL,
         execute: (player, _, x, y, z) => {

@@ -22,10 +22,12 @@ exports.findPlayerByIdOrNickname = function (playerName){
 exports.sendToAdmins = function(text){
     mp.players.forEach(_player => {
         if(_player.getVariable('level') >= lvls.ALL_ADMINS) {
-            _player.outputChatBox(text)
+            _player.outputChatBox("{#FF6347} A: "+text)
         }
     })
 }
+// [ML] (script) chatcolor.lua: -10270721   A: _geroin_ áûë ñëàïíóò àäìèíèñòðàòîðîì papercut.
+// [ML] (script) chatcolor.lua: -6723841   [A] papercut: sory
 exports.log = function(text, type){
     if(!type) type = "info"
     let color
