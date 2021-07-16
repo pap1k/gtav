@@ -1,2 +1,2 @@
 require("./clientmode/index")
-require("./browser/scoreboard/index")
+require("./clientmode/scoreboard")
