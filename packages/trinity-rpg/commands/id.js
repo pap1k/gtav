@@ -1,7 +1,7 @@
 var exports = module.exports = {}
 const lvls = require("../lvls")
 const {findPlayerByIdOrNickname} = require("../utils.js")
-exports = [
+exports.obj = [
     {
         triggers: ['id'],
         lvl: lvls.PLAYER,
