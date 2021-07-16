@@ -5,3 +5,16 @@ function getScoreboardList(){
     });
     return list;
 }
+function updateScoreboard(){
+    mp.players.call("scoreboardUpdate", [ getScoreboardList() ] );
+}
+
+mp.events.add('playerJoin', () => {
+    updateScoreboard();
+});
+
+mp.events.add("playerQuit", () => {
+    updateScoreboard();
+});
+
+setInterval(() => updateScoreboard(), 3000);
