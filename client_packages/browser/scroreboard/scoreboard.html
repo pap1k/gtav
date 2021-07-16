@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="package://scoreboard/pure-min.css"> <!-- https://purecss.io/ -->
+    <style>
+        .scoreboard-table{
+            width: auto;
+            height: 80%;
+            margin: 10% auto 0;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <table class="scoreboard-table pure-table pure-table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя</th>
+                <th>Пинг</th>
+            </tr>
+        </thead>
+        <tbody id="scoreboard-body"></tbody>
+    </table>
+
+<script>
+    function listClear(){
+        document.getElementById('scoreboard-body').innerHTML = '';
+    }
+
+    function listAddPlayer(id, name, ping){
+        document.getElementById('scoreboard-body').innerHTML+= `<tr><td>${id}</td><td>${name}</td><td>${ping}</td></tr>`;
+    }
+</script>
+</body>
+</html>
