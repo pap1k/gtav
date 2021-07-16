@@ -19,5 +19,16 @@ exports.obj = [
                 player.outputChatBox(`По указанным паарметрам не найдено игроков`)    
            
         }
+    },
+    {
+        triggers: ["online"],
+        lvl: lvls.PLAYER,
+        execute: (player) => {
+            let list = ""
+            mp.players.forEach(_player => {
+                list += _player.name+", "
+            })
+            player.outputChatBox("Игроки в сети: "+list.substring(list.length-2))
+        }
     }
 ]

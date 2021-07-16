@@ -5,7 +5,7 @@ var exports = module.exports = {}
 exports.obj = [
     {
         triggers: ["veh", "car"],
-        lvl: lvls.UNIQUE_LEVEL,
+        lvl: lvls.TESTER,
         execute: (player, _, vehName) => {
             if (vehName && vehName.trim().length > 0) {
                 let pos = player.position
@@ -18,7 +18,7 @@ exports.obj = [
     },
     {
         triggers: ["weap", "weapon"],
-        lvl: lvls.UNIQUE_LEVEL,
+        lvl: lvls.TESTER,
         args: 1,
         execute: (player, _, weap) => {
             const weaponHash = mp.joaat("weapon_"+weap)
@@ -27,7 +27,7 @@ exports.obj = [
     },
     {
         triggers: ["gweap", "ggun"],
-        lvl: lvls.UNIQUE_LEVEL,
+        lvl: lvls.TESTER,
         target: true,
         hint: "/gweap [id] [оружие]",
         args: 2,
@@ -39,7 +39,7 @@ exports.obj = [
     },
     {
         triggers: ["tppos"],
-        lvl: lvls.UNIQUE_LEVEL,
+        lvl: lvls.TESTER,
         execute: (player, _, x, y, z) => {
             if (!isNaN(parseFloat(x)) && !isNaN(parseFloat(y)) && !isNaN(parseFloat(z))){
                 player.position = new mp.Vector3(parseFloat(x), parseFloat(y), parseFloat(z))
@@ -49,43 +49,33 @@ exports.obj = [
         }
     },
     {
-        triggers: ["makeunique"],
+        triggers: ["maketester"],
         lvl: lvls.UNIQUE_LEVEL,
+        target: true,
+        hint: "/maketester [id или часть ника]",
         execute: (player, _, target) => {
-            if(target){
-                const t = findPlayerByIdOrNickname(target)
-                
-                if(!t)
-                    return player.outputChatBox("Не найден такой игрок")
-                if(t.length)
-                    return player.outputChatBox("Найдено несколько таких игроков")
-
-                Player.findOne({rgid: t.rgscId, name: t.name}, (err, doc) => {
-                    doc.player_level = lvls.UNIQUE_LEVEL
-                    doc.save()
-                })  
-            }
-            else
-                player.outputChatBox("Подсказка: /makeunique [id или часть ника]")
+            Player.findOne({rgid: target.rgscId, name: target.name}, (err, doc) => {
+                doc.player_level = lvls.TESTER
+                doc.save()
+            })
+            target.setVariable("level", lvls.TESTER)
+            player.outputChatBox("Вы назначили "+target.name+" тестером")
+            target.outputChatBox("Создатель проекта "+player.name+" назначил вас тестером")
         }
     },
     {
         triggers: ["destroy"],
         lvl: lvls.UNIQUE_LEVEL,
+        target: true,
+        hint: "/destroy [id или часть ника]",
         execute: (player, _, target) => {
-            if(target){
-                const t = findPlayerByIdOrNickname(target)
-                if(t){
-                    Player.findOne({rgid: t.rgscId, name: t.name}, (err, doc) => {
-                        doc.player_level = lvls.PLAYER
-                        doc.save()
-                    })
-                }
-                else
-                    player.outputChatBox("Не найден такой игрок")
-            }
-            else
-                player.outputChatBox("Подсказка: /destroy [id или часть ника]")
+            Player.findOne({rgid: target.rgscId, name: target.name}, (err, doc) => {
+                doc.player_level = lvls.PLAYER
+                doc.save()
+            })
+            target.setVariable("level", lvls.PLAYER)
+            player.outputChatBox("Вы сняли "+target.name+" с должности тестера")
+            target.outputChatBox("Создатель проекта "+player.name+" сналя вас с должности тестера")
         }
     },
     {
