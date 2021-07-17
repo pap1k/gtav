@@ -23,7 +23,7 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                             if(cmd.target){
                                 //если оно-таки есть, значит, параметров должно быть 2. Если нет то иди нахуй с подсказкой
                                 if(params.length < 2)
-                                return player.outputChatBox(cmd.hint ? "Подсказка: "+cmd.hint : "Передано неверное количество аргументов")
+                                    return player.outputChatBox(cmd.hint ? "Подсказка: "+cmd.hint : "Передано неверное количество аргументов")
 
                                 //чекаем на челика
                                 const foundPlayer = utils.findPlayerByIdOrNickname(params[1])
@@ -38,6 +38,8 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                             }
                             if(cmd.fulltext === undefined)
                                 params[0] = trigger
+                            if(cmd.text_non_empty && (!params[0] || params[0].trim() == ""))
+                                return player.outputChatBox(cmd.hint ? "Подсказка: "+cmd.hint : "Текст не может быть пустым")
                             //TODO log using
                             cmd.execute(player, ...params)
                         }
