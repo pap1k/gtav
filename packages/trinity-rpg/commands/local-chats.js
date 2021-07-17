@@ -14,6 +14,15 @@ exports.obj = [
         execute: localChat,
     },
     {
+        triggers: ["c!"],
+        fulltext: true,
+        text_non_empty: true,
+        lvl: lvls.PLAYER,
+        execute: (player, fullcmd) => {
+            localChat(player, fullcmd.substring(1, fullcmd.length))
+        },
+    },
+    {
         triggers: ["s"],
         fulltext: true,
         text_non_empty: true,
