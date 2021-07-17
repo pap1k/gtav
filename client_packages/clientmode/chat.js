@@ -1,3 +1,6 @@
-mp.events.add('Send_ToChat', (message) =>{
-    mp.gui.chat.push(`${message}`);
+mp.events.add("InitiateCustomChat", () => {
+    mp.gui.chat.show(false); 
+
+    const chatbox = mp.browsers.new('package://browser/chat/chat.html');
+    chatbox.markAsChat();
 });

@@ -22,5 +22,6 @@ exports.obj = [
 
 function localChat(player, fullcmd){
     if(!isMuted(player))
+        mp.events.call('playerChat', `${player.name} сказал: ${fullcmd}`)
         mp.players.broadcastInRange(player.position, 20, `${player.name} сказал: ${fullcmd}`)    
 }

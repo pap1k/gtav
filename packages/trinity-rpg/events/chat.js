@@ -1,3 +1,3 @@
-mp.events.add("outputChatBox", (message) =>{
-    player.call('Send_ToChat', message);
+mp.events.add("playerChat", (message) =>{
+    player.call('Send_ToChat',[message]);
 });
