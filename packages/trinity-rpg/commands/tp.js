@@ -18,8 +18,8 @@ exports.obj = [
         execute: (player, trig, targ) => {
             const tpos = player.position
             if(trig == "getheres"){
-                if(targ.vehicle)
-                    targ.vehicle.setForwardSpeed(0)
+                // if(targ.vehicle)
+                //     targ.vehicle.setForwardSpeed(0)
                 targ.position = new mp.Vector3(tpos.x + 1, tpos.y + 1, tpos.z)
             }
             else if(trig == "gethere"){
