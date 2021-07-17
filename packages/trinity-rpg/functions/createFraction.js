@@ -10,5 +10,13 @@ module.exports = {
         }
         else
             return "Уже есть фракция с таким идом"
+    },
+    del: async (idx) => {
+        const f = await Fractions.deleteOne({idx})
+        if(f.ok){
+            return "Фракция "+f+" удалена"
+        }
+        else
+            return "Не найдена такая фракция"
     }
 }

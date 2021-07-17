@@ -21,16 +21,26 @@ exports.obj = [
         triggers: ["fspawn"],
         lvl: lvls.ALL_ADMINS,
         args: 1,
-        hint: "/fspawn [IDX фракции]",
-        execute: async (player, _, to) => {
+        hint: "/fspawn [IDX фракции] [номер точки]",
+        execute: async (player, _, to, num) => {
             if(!parseInt(to))
                 return player.outputChatBox("Ошибка: id фракции должен быть числом")
+            if(num && !parseInt(num))
+                return player.outputChatBox("Ошибка: номерточки должен быть числом")
             const f = await Fraction.find({idx: parseInt(to)})
             console.log(f[0])
-            if(f.length == 1)
-                player.position = new mp.Vector3(f[0].spawnpoints[0].x, f[0].spawnpoints[0].y, f[0].spawnpoints[0].z)
+            if(f.length == 1){
+                if(num){
+                    if(f[0].spawnpoints.length >= num)
+                        player.position = new mp.Vector3(f[0].spawnpoints[num-1].x, f[0].spawnpoints[num-1].y, f[0].spawnpoints[num-1].z)
+                    else
+                        player.outputChatBox("У фракции нет спавна с таким номером")
+                }
+                else
+                    player.position = new mp.Vector3(f[0].spawnpoints[0].x, f[0].spawnpoints[0].y, f[0].spawnpoints[0].z)
+            }
             else
-                player.outputChatBox("не удалось найти фракцию с таким IDX")
+                player.outputChatBox("Не удалось найти фракцию с таким IDX")
         }
     },
     {
@@ -45,6 +55,38 @@ exports.obj = [
             const result = await create(parseInt(idx), name, player.position)
             player.outputChatBox(result)
         }
+    },
+    {
+        triggers: ["deletefraction"],
+        lvl: lvls.UNIQUE_LEVEL,
+        args: 1,
+        hint: "/deletefraction [idx]",
+        execute: async (player, _, idx) => {
+            if(!parseInt(idx))
+                return player.outputChatBox("idx должен быть числом")
+            const {del} = require("../functions/createFraction")
+            const result = await del(parseInt(idx))
+            player.outputChatBox(result)
+        }
+    },
+    {
+        triggers: ["addspawnpoint"],
+        lvl: lvls.TESTER,
+        args: 1,
+        hint: "/addspawnpoint [IDX фракции]",
+        execute: async (player, _, idx) => {
+            if(!parseInt(idx))
+                return player.outputChatBox("idx должен быть числом")
+            Fraction.findOne({idx: parseInt(idx)}, (err, doc) => {
+                if(!err){
+                    doc.spawnpoints.push({x: player.position.x, y: player.position.y, z: player.position.z})
+                    doc.save()
+                    player.outputChatBox("Для фракции "+doc.name+" добавлена точка спавна")
+                }
+                else
+                    player.outputChatBox("Ошибка какая то. в логе мб")
+            })
+        }  
     },
     {
         triggers: ["weap", "weapon"],
