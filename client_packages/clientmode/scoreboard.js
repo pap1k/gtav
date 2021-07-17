@@ -1,7 +1,7 @@
-let browser = mp.browsers.new('package://browser/scoreboard/index.html');
+let browser = mp.browsers.new('package://browser/scoreboard/scoreboard.html');
 browser.active = false;
 
-const KEY_CODE = 0x72; // F3
+const KEY_CODE = 0x09; // F3
 
 mp.keys.bind(KEY_CODE, true, () => {
     browser.active = true;
