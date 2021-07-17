@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        table {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 14px;
+            border-radius: 10px;
+            border-spacing: 0;
+            text-align: center;
+            text-shadow: rgb(0, 0, 0) 0 0 3px;
+            width: 60%;
+            height: 70%;
+            margin: 10% auto 0;
+            background-color: #3d3d3d;
+        }
+        th {
+            background: #3d3d3d;
+            color: white;
+            padding: 10px 20px;
+        }
+        th, td {
+            border-width: 0.5px 0.5px 0.5px 0.5px;
+            border-color: rgb(0, 0, 0);
+            border: 0.5px solid #000;
+        }
+        th:first-child, td:first-child {
+            text-align: left;
+        }
+        th:first-child {
+            border-top-left-radius: 10px;
+        }
+        th:last-child {
+            border-top-right-radius: 10px;
+            border-right: none;
+        }
+        td {
+            padding: 10px 20px;
+            background: #777777;
+            color: rgb(231, 231, 231);
+            text-shadow: rgba(0, 0, 0, 0.616) 0 0 3px;
+        }
+        tr:last-child td:first-child {
+            border-radius: 0 0 0 10px;
+        }
+        tr:last-child td:last-child {
+            border-radius: 0 0 10px 0;
+        }
+        tr td:last-child {
+            border-right: none;
+        }
+    </style>
+</head>
+<body>
+    <table class="scoreboard-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NickName</th>
+                <th>Ping</th>
+            </tr>
+        </thead>
+        <tbody id="scoreboard-body"></tbody>
+    </table>
+
+<script>
+    function listClear(){
+        document.getElementById('scoreboard-body').innerHTML = '';
+    }
+
+    function listAddPlayer(id, name, ping){
+        document.getElementById('scoreboard-body').innerHTML+= `<tr><td>${id}</td><td>${name}</td><td>${ping}</td></tr>`;
+    }
+</script>
+</body>
+</html>
