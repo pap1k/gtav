@@ -15,9 +15,9 @@ async function start(){
                 useUnifiedTopology: true
             }
         , e => console.log(e))
-        utils.log("Подключение к БД успешно", "done")
+        utils.log("Database connection successful!", "done")
     } catch(e){
-        throw "Пизда с БД"
+        throw "Database connection failed!"
     }
     
 }
