@@ -10,11 +10,17 @@ const schema = new Schema({
         required: true
     },
     players: {
-        type: Object,
-        required: true
+        type: Object
     },
     leader: {
         type: Number
+    },
+    spawnpoints: {
+        type: Array,
+        required: true
+    },
+    duty:{
+        type: Object
     }
 })
 
