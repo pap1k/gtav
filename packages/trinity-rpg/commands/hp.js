@@ -18,7 +18,7 @@ obj:[
         args: 2,
         hint: "/sethp [id или часть нкиа] [значение]",
         execute: (player, _, target, hp) => {
-            if(!parseInt(hp) || (hp < 0 && hp > 100))
+            if(isNaN(parseInt(hp)) || (hp < 0 && hp > 100))
                 return player.outputChatBox("Число должно быть числом от 0 до 100")
             target.health = parseInt(hp)
             player.outputChatBox("Вы установили HP игрока "+target.name+" на "+hp)
@@ -41,7 +41,7 @@ obj:[
         args: 2,
         hint: "/setarm [id или часть нкиа] [значение]",
         execute: (player, _, target, hp) => {
-            if(!parseInt(hp) || (hp < 0 && hp > 100))
+            if(isNaN(parseInt(hp)) || (hp < 0 && hp > 100))
                 return player.outputChatBox("Число должно быть числом от 0 до 100")
             target.armour = parseInt(hp)
             player.outputChatBox("Вы установили броню игрока "+target.name+" на "+hp)
