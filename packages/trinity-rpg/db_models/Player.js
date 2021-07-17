@@ -20,6 +20,10 @@ const schema = new Schema({
     score: {
         type: Number,
         default: 1,
+    },
+    fraction: {
+        type: Number,
+        default: 0
     }
 })
 

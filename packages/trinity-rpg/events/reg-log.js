@@ -1,7 +1,9 @@
 //const db = require("./db")
 const Player = require("../db_models/Player")
+const spawn = require("../server-side-conf.json").global_spawn
+const Fraction = require("../db_models/Fraction")
 const {sendToAdmins} = require("../utils")
-const level = require("../lvls")
+const lvls = require("../lvls")
 const conf = require("./config.json")
 
 mp.events.add('playerJoin', async (player) => {
@@ -13,7 +15,7 @@ mp.events.add('playerJoin', async (player) => {
     else{
         //player.call login
         if(conf.allow_nologin){
-            player.setVariable('level', p[0].player_level)
+            authAndSpawn(player, p)
             return console.log(`[SERVER]: ${player.name} has joined the server!`)
         }
         player.call("showLogin")
@@ -38,10 +40,25 @@ mp.events.add('onPlayerRegister', async (player, data) => {
 mp.events.add('onPlayerLogin', async (player, data) => {
     data = JSON.parse(data)
     const p = await Player.find({name: player.name})
-    if(data.pass == p[0].password){
-        player.setVariable('level', p[0].player_level)
-        player.call('hideAllBrowsers')
-    }
+    if(data.pass == p[0].password)
+        authAndSpawn(player, p)
     else
         player.call("showPassError", "э бля пароль неверный нахуй")
 })
+
+async function authAndSpawn(player, dbplayer){
+    console.log(player.name, dbplayer)
+    player.setVariable('level', dbplayer.player_level)
+    player.call('hideAllBrowsers')
+    if(dbplayer.fraction != 0){
+        const f = await Fraction.find({idx: dbplayer.fraction})
+        if(f.length == 1){
+            player.position = new mp.Vector3(f[0].spawnpoints[0].x, f[0].spawnpoints[0].y, f[0].spawnpoints[0].z)
+        }
+        else
+            player.position = new mp.Vector3(spawn.x, spawn.y, spawn.z)
+    }
+    else
+        player.position = new mp.Vector3(spawn.x, spawn.y, spawn.z)
+
+}
