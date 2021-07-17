@@ -1,5 +1,6 @@
 const normalizedPath = require("path").join(__dirname);
 const utils = require("../utils")
+const log = require("../functions/cmdLog").add
 let cmdList = []
 require("fs").readdirSync(normalizedPath).forEach(function(file) {
     if(file != "main.js"){
@@ -40,7 +41,7 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                                 params[0] = trigger
                             if(cmd.text_non_empty && (!params[0] || params[0].trim() == ""))
                                 return player.outputChatBox(cmd.hint ? "Подсказка: "+cmd.hint : "Текст не может быть пустым")
-                            //TODO log using
+                                log(player.name, trigger, Date.now())
                             cmd.execute(player, ...params)
                         }
                         else

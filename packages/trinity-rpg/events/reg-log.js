@@ -15,7 +15,7 @@ mp.events.add('playerJoin', async (player) => {
     else{
         //player.call login
         if(conf.allow_nologin){
-            authAndSpawn(player, p)
+            authAndSpawn(player, p[0])
             return console.log(`[SERVER]: ${player.name} has joined the server!`)
         }
         player.call("showLogin")
@@ -47,10 +47,10 @@ mp.events.add('onPlayerLogin', async (player, data) => {
 })
 
 async function authAndSpawn(player, dbplayer){
-    console.log(player.name, dbplayer)
     player.setVariable('level', dbplayer.player_level)
+    player.setVariable('fraction', dbplayer.fraction)
     player.call('hideAllBrowsers')
-    if(dbplayer.fraction != 0){
+    if(player.getVariable('fraction') != 0){
         const f = await Fraction.find({idx: dbplayer.fraction})
         if(f.length == 1){
             player.position = new mp.Vector3(f[0].spawnpoints[0].x, f[0].spawnpoints[0].y, f[0].spawnpoints[0].z)
@@ -60,5 +60,4 @@ async function authAndSpawn(player, dbplayer){
     }
     else
         player.position = new mp.Vector3(spawn.x, spawn.y, spawn.z)
-
 }
