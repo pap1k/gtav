@@ -1,26 +1,53 @@
 //Allows set HP
 const utils = require('../utils.js')
-
-mp.events.addCommand('hp', (player) => {
-    player.health = 100
-    player.outputChatBox("Вы были вылечены")
-})
-mp.events.addCommand('sethp', (player, fullcmd, target, hp) => {
-    if(target && hp){
-        hp = parseInt(hp)
-        if(isNaN(hp) || (hp < 0 && hp > 100))
-            return player.outputChatBox("Количество HP должно быть числом от 0 до 100")
-
-        const foundPlayer = utils.findPlayerByIdOrNickname(target)
-
-        if (!foundPlayer)
-            return player.outputChatBox("По указанным параметрам не найдено игроков")
-        if(foundPlayer.length)
-            return player.outputChatBox("По указанным параметрам найдено несколько игроков")
-
-        foundPlayer.health = parseInt(hp)
-        player.outputChatBox("Вы установили HP игрока "+foundPlayer.name+" на "+hp)
-    }
-    else
-        player.outputChatBox("Подсказка: /sethp [ID или часть ника] [количество HP]")   
-})
+const lvls = require("../lvls")
+module.exports = {
+obj:[
+    {
+        triggers: ["hp"],
+        lvl: lvls.ALL_ADMINS,
+        execute: player => {
+            player.health = 100
+            player.outputChatBox("Вы были вылечены")
+        }
+    },
+    {
+        triggers: ["sethp"],
+        lvl: lvls.ALL_ADMINS,
+        target: true,
+        args: 2,
+        hint: "/sethp [id или часть нкиа] [значение]",
+        execute: (player, _, target, hp) => {
+            if(isNaN(parseInt(hp)) || (hp < 0 && hp > 100))
+                return player.outputChatBox("Число должно быть числом от 0 до 100")
+            target.health = parseInt(hp)
+            player.outputChatBox("Вы установили HP игрока "+target.name+" на "+hp)
+            if(player !== target)
+                utils.sendToAdmins(`Администратор ${player.name} установил HP игрока ${target.name} на ${hp}`)
+        }
+    },
+    {
+        triggers: ["arm"],
+        lvl: lvls.ALL_ADMINS,
+        execute: player => {
+            player.armour = 100
+            player.outputChatBox("Ваша броня восстановлена")
+        }
+    },
+    {
+        triggers: ["setarm"],
+        lvl: lvls.ALL_ADMINS,
+        target: true,
+        args: 2,
+        hint: "/setarm [id или часть нкиа] [значение]",
+        execute: (player, _, target, hp) => {
+            if(isNaN(parseInt(hp)) || (hp < 0 && hp > 100))
+                return player.outputChatBox("Число должно быть числом от 0 до 100")
+            target.armour = parseInt(hp)
+            player.outputChatBox("Вы установили броню игрока "+target.name+" на "+hp)
+            if(player !== target)
+                utils.sendToAdmins(`Администратор ${player.name} установил броню игрока ${target.name} на ${hp}`)
+        }
+    },
+]
+}

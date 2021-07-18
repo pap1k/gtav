@@ -1,5 +1,5 @@
 const {Schema, model} = require("mongoose")
-
+const ssconf = require("../server-side-conf.json")
 const schema = new Schema({
     name: {
         type: String,
@@ -20,6 +20,14 @@ const schema = new Schema({
     score: {
         type: Number,
         default: 1,
+    },
+    fraction: {
+        type: Number,
+        default: 0
+    },
+    spawn: {
+        type: Object,
+        default: ssconf.global_spawn
     }
 })
 

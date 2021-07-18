@@ -23,7 +23,9 @@ mp.events.add('sendReg', data =>{
 })
 
 mp.events.add('hideAllBrowsers', ()=> {
-    mp.gui.cursor.show(false, false)
-    mp.gui.chat.activate(true)
-    browser.destroy()
+    if(browser){
+        mp.gui.cursor.show(false, false)
+        mp.gui.chat.activate(true)
+        browser.destroy()
+    }
 })

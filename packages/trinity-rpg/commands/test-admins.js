@@ -28,7 +28,6 @@ exports.obj = [
             if(num && !parseInt(num))
                 return player.outputChatBox("Ошибка: номерточки должен быть числом")
             const f = await Fraction.find({idx: parseInt(to)})
-            console.log(f[0])
             if(f.length == 1){
                 if(num){
                     if(f[0].spawnpoints.length >= num)

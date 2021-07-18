@@ -1,5 +1,6 @@
 const normalizedPath = require("path").join(__dirname);
 const utils = require("../utils")
+const log = require("../functions/cmdLog").add
 let cmdList = []
 require("fs").readdirSync(normalizedPath).forEach(function(file) {
     if(file != "main.js"){
@@ -11,6 +12,9 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                 if(!cmd.triggers) return utils.log("Error of loading "+file+" in commands. Cant find 'triggers' key.", "warn")
                 if(!cmd.execute) return utils.log("Error of loading "+file+" in commands. Trigger: "+cmd.triggers[0]+" Cant find 'execute' key.", "warn")
                 if(cmd.lvl == undefined) return utils.log("Error of loading "+file+" in commands. Trigger: "+cmd.triggers[0]+" Cant find 'lvl' key.", "warn")
+
+                if(typeof(cmd.triggers) == "string")
+                    cmd.triggers = [cmd.triggers]
 
                 cmd.triggers.forEach(trigger => {
                     let f = (player, ...params)=>{
@@ -40,7 +44,7 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                                 params[0] = trigger
                             if(cmd.text_non_empty && (!params[0] || params[0].trim() == ""))
                                 return player.outputChatBox(cmd.hint ? "Подсказка: "+cmd.hint : "Текст не может быть пустым")
-                            //TODO log using
+                                log(player.name, trigger, Date.now())
                             cmd.execute(player, ...params)
                         }
                         else

@@ -1,5 +1,6 @@
 //init Commands file
 require('./commands/main')
+require('./structures/fraction/commands/main')
 require("./events/main")
 const db = require("./server-side-conf.json").db
 //const db = require('./db')
