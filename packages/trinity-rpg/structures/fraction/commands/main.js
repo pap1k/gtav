@@ -20,7 +20,7 @@ require("fs").readdirSync(normalizedPath).forEach(file => {
                     mp.events.addCommand(trigger, (player, ...params) => {
                         if(!(player.getVariable('fraction') == cmd.fraction || (cmd.fraction == conf.ANY && player.getVariable('fraction') != 0)))
                             return player.outputChatBox("Вы не можете использовать эту команду")
-                            if(cmd.args && params.length-1 < cmd.args)
+                        if(cmd.args && params.length-1 < cmd.args)
                             return player.outputChatBox(cmd.hint ? "Подсказка: "+cmd.hint : "Передано неверное количество аргументов")
 
                         //если в конструкторе есть указание

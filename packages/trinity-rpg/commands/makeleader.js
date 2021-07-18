@@ -1,5 +1,6 @@
 const lvls = require("../lvls")
 const Fraction = require("../db_models/Fraction")
+const Player = require("../db_models/Player")
 const {sendToAdmins} = require("../utils")
 module.exports = {
 obj: [
@@ -20,6 +21,11 @@ obj: [
                 doc.leader = targ.getVariable('uid')
                 doc.save()
             })
+            Player.findOne({_id: targ.getVariable('uid')}, (e, doc) => {
+                doc.fraction = idx
+                doc.save()
+            })
+            targ.setVariable('fraction', idx)
 
             sendToAdmins(`Администратор ${player.name} назначил ${targ.name} лидером ${fract.name}`)
             targ.outputChatBox(`Администратор ${player.name} назначил вас лидером ${fract.name}`)
