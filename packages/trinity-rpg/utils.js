@@ -26,6 +26,17 @@ exports.sendToAdmins = function(text){
         }
     })
 }
+
+exports.findPlayerByUid = function (uid){
+    let found = null
+    mp.players.forEach(_player => {
+        if(_player.getVariable('uid') == uid) {
+            found = _player
+        }
+    })
+    return found
+}
+
 // [ML] (script) chatcolor.lua: -10270721   A: _geroin_ áûë ñëàïíóò àäìèíèñòðàòîðîì papercut.
 // [ML] (script) chatcolor.lua: -6723841   [A] papercut: sory
 exports.log = function(text, type){

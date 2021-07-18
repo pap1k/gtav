@@ -1,7 +1,7 @@
 const conf = require("./config.json")
 const Fraction = require("../../../db_models/Fraction")
 const colors = require("../../../chat-colors")
-const getFraction = require("../../../globals/Fractions").getById
+
 module.exports = {
 obj:
 [
@@ -9,8 +9,8 @@ obj:
         triggers: "invite",
         fraction: conf.ANY,
         target: true,
-        execute: (player, _, targ) => {
-            const f = getFraction(player.getVariable("fraction"))
+        execute: async (player, _, targ) => {
+            const f = await Fraction.findOne({idx: player.getVariable("fraction")})
             if(f.leader == player.getVariable("uid")){
                 targ.outputChatBox(`${player.name} принял вас в ${f.name}`)
                 Fraction.findOne({ _id: f._id }, (err, doc) => {

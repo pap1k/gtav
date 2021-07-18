@@ -1,5 +1,5 @@
 const Fraction = require("../db_models/Fraction")
-let fractions = await Fraction.find()
+let fractions = Fraction.find()
 
 function getById(id){
     fractions.forEach(f => {
