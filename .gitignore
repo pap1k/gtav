@@ -4,5 +4,6 @@ BugTrap-x64.dll
 linux_x64tar.gz
 ragemp-server.exe
 bin/
+conf.json
 ragemp-srv/
 .listcache
