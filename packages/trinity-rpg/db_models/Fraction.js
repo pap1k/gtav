@@ -10,10 +10,10 @@ const schema = new Schema({
         required: true
     },
     players: {
-        type: Object
+        type: Array
     },
     leader: {
-        type: Number
+        type: String
     },
     spawnpoints: {
         type: Array,

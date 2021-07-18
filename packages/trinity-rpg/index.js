@@ -2,8 +2,9 @@
 require('./commands/main')
 require('./structures/fraction/commands/main')
 require("./events/main")
+require("./globals/loader")
+
 const db = require("./server-side-conf.json").db
-//const db = require('./db')
 const mongoose = require("mongoose")
 const utils = require("./utils")
 async function start(){

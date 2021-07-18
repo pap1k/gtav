@@ -7,10 +7,14 @@ require("fs").readdirSync(normalizedPath).forEach(file => {
     if(file != "main.js"){
         if(file.substring(file.length - 2) == "js"){
             const dick = require("./"+file)
+            if(!dick.obj) return utils.log("Skipping epmty file", "info")
             dick.obj.forEach(cmd => {
                 if(cmd.triggers === undefined) return utils.log("Error of loading "+file+". Cant find triggers key", "err")
                 if(cmd.fraction === undefined) return utils.log("Error of loading "+file+". Cnat find fraction key", "err")
                 if(cmd.execute === undefined) return utils.log("Error of loading "+file+". Cnat find execute key", "err")
+                
+                if(typeof(cmd.triggers) == "string")
+                    cmd.triggers = [cmd.triggers]
 
                 cmd.triggers.forEach(trigger => {
                     mp.events.addCommand(trigger, (player, ...params) => {
@@ -42,7 +46,10 @@ require("fs").readdirSync(normalizedPath).forEach(file => {
 
                         if(cmd.text_non_empty && (!params[0] || params[0].trim() == ""))
                             return player.outputChatBox(cmd.hint ? "Подсказка: "+cmd.hint : "Текст не может быть пустым")
-                        log(player.name, trigger, Date.now())
+                        if(cmd.fulltext)
+                            log("CHAT", player.name, trigger, Date.now(), params[0])
+                        else
+                            log("CMD", player.name, trigger, Date.now())
                         cmd.execute(player, ...params)
                     })
                 })

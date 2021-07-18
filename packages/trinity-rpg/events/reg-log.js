@@ -55,6 +55,7 @@ async function authAndSpawn(player, dbplayer){
     player.setVariable('level', dbplayer.player_level)
     player.setVariable('fraction', dbplayer.fraction)
     player.setVariable('spawnpoint', new mp.Vector3(dbplayer.spawn.x, dbplayer.spawn.y, dbplayer.spawn.z))
+    player.setVariable('uid', dbplayer._id)
 
     mp.players.broadcast(`${color.GREY}${player.name} ID ${player.id} подключился к серверу`)
 
