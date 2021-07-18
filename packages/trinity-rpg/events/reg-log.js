@@ -49,7 +49,7 @@ mp.events.add('onPlayerLogin', async (player, data) => {
 async function authAndSpawn(player, dbplayer){
     player.setVariable('level', dbplayer.player_level)
     player.setVariable('fraction', dbplayer.fraction)
-    player.setVariable('spawnpoint', new mp.Vector3(dbplayer.spawn.x, dbplayer.spawn.y, dbplayer.spawn.z))
+    player.setVariable('spawnpoint', mp.Vector3(dbplayer.spawn.x, dbplayer.spawn.y, dbplayer.spawn.z))
 
     player.call('hideAllBrowsers')
     if(player.getVariable('fraction') != 0){
