@@ -1,4 +1,5 @@
 var exports = module.exports = {}
+const {findPlayerByIdOrNickname} = require("../utils")
 const lvls = require("../lvls")
 exports.obj = [
     {
@@ -31,6 +32,24 @@ exports.obj = [
             else
                 return targ.position = new mp.Vector3(tpos.x + 1, tpos.y + 1, tpos.z)
             targ.outputChatBox("Вы были телепортированы")
+        }
+    },
+    {
+        triggers: "onspawn",
+        lvl: lvls.ALL_ADMINS,
+        execute: (player, _, targ) => {
+            if(!isNaN(targ)){
+                const t = findPlayerByIdOrNickname(targ)
+                if(t){
+                    if(t.length)
+                        player.outputChatBox("По указанным параметрам найдено несколько игроков")
+                    else
+                        player.position = t.getVariable("spawnpoint")
+                }
+                else
+                    player.outputChatBox("По указанным параметрам не найдено игроков")
+            }
+            player.position = player.getVariable("spawnpoint")
         }
     }
 ]

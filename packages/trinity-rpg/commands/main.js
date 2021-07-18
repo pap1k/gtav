@@ -13,6 +13,9 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                 if(!cmd.execute) return utils.log("Error of loading "+file+" in commands. Trigger: "+cmd.triggers[0]+" Cant find 'execute' key.", "warn")
                 if(cmd.lvl == undefined) return utils.log("Error of loading "+file+" in commands. Trigger: "+cmd.triggers[0]+" Cant find 'lvl' key.", "warn")
 
+                if(typeof(cmd.triggers) == "string")
+                    cmd.triggers = [cmd.triggers]
+
                 cmd.triggers.forEach(trigger => {
                     let f = (player, ...params)=>{
                         if(player.getVariable('level') >= cmd.lvl){
