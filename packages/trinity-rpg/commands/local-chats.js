@@ -1,5 +1,6 @@
 const lvls = require("../lvls")
 const COLOR = require("../chat-colors.json")
+const log = require("../functions/cmdLog").add
 const {isMuted} = require("../functions/getMuted")
 var exports = module.exports = {}
 
@@ -36,6 +37,7 @@ exports.obj = [
 
 function localChat(player, fullcmd){
     if(!isMuted(player)){
+        log("CHAT", player.name, "c", Date.now(), fullcmd)
         if(fullcmd[0] == "!")
             mp.players.broadcastInRange(player.position, 5, `${COLOR.CS}${player.name} тихо сказал: ${fullcmd.substring(1, fullcmd.length)}`)
         else

@@ -44,13 +44,17 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                                 params[0] = trigger
                             if(cmd.text_non_empty && (!params[0] || params[0].trim() == ""))
                                 return player.outputChatBox(cmd.hint ? "Подсказка: "+cmd.hint : "Текст не может быть пустым")
-                                log(player.name, trigger, Date.now())
+
+                            if(cmd.fulltext)
+                                log("CHAT", player.name, trigger, Date.now(), params[0])
+                            else
+                                log("CMD", player.name, trigger, Date.now())
+
                             cmd.execute(player, ...params)
                         }
                         else
                             player.outputChatBox("У вас нет доступа к этой команде")
                     }
-                    //mp.events.addCommand(trigger, f)
                     cmdList.push(trigger)
                     mp.events.addCommand(trigger, f)
                 })

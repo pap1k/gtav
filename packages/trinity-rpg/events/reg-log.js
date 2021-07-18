@@ -4,9 +4,14 @@ const spawn = require("../server-side-conf.json").global_spawn
 const Fraction = require("../db_models/Fraction")
 const {sendToAdmins} = require("../utils")
 const lvls = require("../lvls")
+const color = require("../chat-colors.json")
 const conf = require("./config.json")
 
 mp.events.add('playerJoin', async (player) => {
+    if(player.name == "WeirdNewbie"){
+        player.outputChatBox("Для игры на этом сервере смените ник в настрйоках клиента RAGE MP (F1 -> Настройки)")
+        player.kick("Deafult nickname")
+    }
     const p = await Player.find({name: player.name})
     if(p.length == 0){
         //player.call register
@@ -49,7 +54,9 @@ mp.events.add('onPlayerLogin', async (player, data) => {
 async function authAndSpawn(player, dbplayer){
     player.setVariable('level', dbplayer.player_level)
     player.setVariable('fraction', dbplayer.fraction)
-    player.setVariable('spawnpoint', mp.Vector3(dbplayer.spawn.x, dbplayer.spawn.y, dbplayer.spawn.z))
+    player.setVariable('spawnpoint', new mp.Vector3(dbplayer.spawn.x, dbplayer.spawn.y, dbplayer.spawn.z))
+
+    mp.players.broadcast(`${color.GREY}${player.name} ID ${player.id} подключился к серверу`)
 
     player.call('hideAllBrowsers')
     if(player.getVariable('fraction') != 0){

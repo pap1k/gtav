@@ -1,5 +1,4 @@
 const lvls = require("../lvls")
-const {findPlayerByIdOrNickname} = require("../utils")
 const Fraction = require("../db_models/Fraction")
 const Player = require("../db_models/Player")
 var exports = module.exports = {}
@@ -9,6 +8,8 @@ exports.obj = [
         lvl: lvls.TESTER,
         execute: (player, _, vehName) => {
             if (vehName && vehName.trim().length > 0) {
+                if(vehName == "1")
+                    vehName = "oppressor2"
                 let pos = player.position
                 pos.x += 3
                 mp.vehicles.new(vehName, pos)
@@ -18,7 +19,7 @@ exports.obj = [
         }
     },
     {
-        triggers: ["fspawn"],
+        triggers: "fspawn",
         lvl: lvls.ALL_ADMINS,
         args: 1,
         hint: "/fspawn [IDX фракции] [номер точки]",
@@ -43,7 +44,7 @@ exports.obj = [
         }
     },
     {
-        triggers: ["createfraction"],
+        triggers: "createfraction",
         lvl: lvls.UNIQUE_LEVEL,
         args: 2,
         hint: "/createfraction [idx] [название]",
@@ -56,7 +57,7 @@ exports.obj = [
         }
     },
     {
-        triggers: ["deletefraction"],
+        triggers: "deletefraction",
         lvl: lvls.UNIQUE_LEVEL,
         args: 1,
         hint: "/deletefraction [idx]",
@@ -69,7 +70,7 @@ exports.obj = [
         }
     },
     {
-        triggers: ["addspawnpoint"],
+        triggers: "addspawnpoint",
         lvl: lvls.TESTER,
         args: 1,
         hint: "/addspawnpoint [IDX фракции]",
@@ -109,7 +110,7 @@ exports.obj = [
         }
     },
     {
-        triggers: ["tppos"],
+        triggers: "tppos",
         lvl: lvls.TESTER,
         execute: (player, _, x, y, z) => {
             if (!isNaN(parseFloat(x)) && !isNaN(parseFloat(y)) && !isNaN(parseFloat(z))){
@@ -120,7 +121,7 @@ exports.obj = [
         }
     },
     {
-        triggers: ["maketester"],
+        triggers: "maketester",
         lvl: lvls.UNIQUE_LEVEL,
         target: true,
         hint: "/maketester [id или часть ника]",
@@ -135,7 +136,7 @@ exports.obj = [
         }
     },
     {
-        triggers: ["destroy"],
+        triggers: "destroy",
         lvl: lvls.UNIQUE_LEVEL,
         target: true,
         hint: "/destroy [id или часть ника]",
@@ -150,8 +151,18 @@ exports.obj = [
         }
     },
     {
-        triggers: ["log"],
-        lvl:  lvls.PLAYER,
-        execute: player => console.log(player)
+        triggers: "agm",
+        lvl: lvls.ALL_ADMINS,
+        execute: player => {
+            const v = player.getVariable("agm")
+            if(agm){
+                player.outputChatBox("Вы включили AGM")
+                player.setVariable("agm", true)
+            }
+            else{
+                player.outputChatBox("Вы выключили AGM")
+                player.setVariable("agm", false)
+            }
+        }
     }
 ]
