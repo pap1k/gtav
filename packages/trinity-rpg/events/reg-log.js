@@ -2,7 +2,7 @@
 const Player = require("../db_models/Player")
 const {sendToAdmins} = require("../utils")
 const level = require("../lvls")
-const conf = require("./conf.json")
+const conf = require("./config.json")
 
 mp.events.add('playerJoin', async (player) => {
     const p = await Player.find({name: player.name})
