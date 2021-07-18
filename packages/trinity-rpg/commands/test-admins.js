@@ -27,7 +27,7 @@ exports.obj = [
             if(!parseInt(to))
                 return player.outputChatBox("Ошибка: id фракции должен быть числом")
             if(num && !parseInt(num))
-                return player.outputChatBox("Ошибка: номерточки должен быть числом")
+                return player.outputChatBox("Ошибка: номе рточки должен быть числом")
             const f = await Fraction.find({idx: parseInt(to)})
             if(f.length == 1){
                 if(num){
