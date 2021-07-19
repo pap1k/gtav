@@ -6,3 +6,4 @@ ragemp-server.exe
 bin/
 ragemp-srv/
 .listcache
+pos.txt
