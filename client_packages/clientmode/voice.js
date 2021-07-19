@@ -1,12 +1,16 @@
 const Use3d = true;
 const UseAutoVolume = false;
 
-const MaxRange = 50.0;
+const MaxRange = 20.0;
+const key = 0x42
 
-mp.keys.bind(0x73, true, function() {
-    mp.voiceChat.muted = !mp.voiceChat.muted;
-    mp.game.graphics.notify("Voice Chat: " + ((!mp.voiceChat.muted) ? "~g~enabled" : "~r~disabled"));
-});
+const statusBar = require("./statusBar")
+
+setInterval(() => {
+	mp.voiceChat.muted = !mp.keys.isDown(keyCode)
+	statusBar.execute(`updateVoice(${mp.voiceChat.muted.toString()});`);
+
+}, 500)
 
 let g_voiceMgr =
 {

@@ -1,1 +1,5 @@
-require("./clientmode/loader")
+require("./clientmode/death")
+require("./clientmode/PrettyTags")
+require("./clientmode/reglog")
+require("./clientmode/scoreboard")
+require("./clientmode/voice")

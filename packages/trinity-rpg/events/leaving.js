@@ -1,4 +1,5 @@
 const lvls = require("../lvls")
+const color = require("../chat-colors.json")
 mp.events.add("playerQuit", (player, exit, reason) => {
     mp.players.forEach(p => {
         if(p.getVariable("level") >= lvls.ALL_ADMINS)
