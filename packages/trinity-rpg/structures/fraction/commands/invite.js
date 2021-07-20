@@ -1,6 +1,6 @@
 const conf = require("./config.json")
-const Fraction = require("../../../db_models/Fraction")
-const Player = require("../../../db_models/Player")
+const Fraction = require("../../../db_worker/db_models/Fraction")
+const Player = require("../../../db_worker/db_models/Player")
 const colors = require("../../../chat-colors")
 
 module.exports = {

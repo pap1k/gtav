@@ -1,6 +1,6 @@
 const lvls = require("../lvls")
-const Fraction = require("../db_models/Fraction")
-const Player = require("../db_models/Player")
+const fractions = require("../db_worker/fractions")
+const players = require("../db_worker/players")
 var exports = module.exports = {}
 exports.obj = [
     {
@@ -28,7 +28,7 @@ exports.obj = [
                 return player.outputChatBox("Ошибка: id фракции должен быть числом")
             if(num && !parseInt(num))
                 return player.outputChatBox("Ошибка: номе рточки должен быть числом")
-            const f = await Fraction.find({idx: parseInt(to)})
+            const f = await fractions.getByIdx(idx)
             if(f.length == 1){
                 if(num){
                     if(f[0].spawnpoints.length >= num)
@@ -77,15 +77,18 @@ exports.obj = [
         execute: async (player, _, idx) => {
             if(!parseInt(idx))
                 return player.outputChatBox("idx должен быть числом")
-            Fraction.findOne({idx: parseInt(idx)}, (err, doc) => {
-                if(!err){
-                    doc.spawnpoints.push({x: player.position.x, y: player.position.y, z: player.position.z})
-                    doc.save()
-                    player.outputChatBox("Для фракции "+doc.name+" добавлена точка спавна")
+            
+            fractions.update(idx, {
+                spawnpoints: {
+                    v: {
+                        x: player.position.x,
+                        y: player.position.y,
+                        z: player.position.z
+                    },
+                    f: "push"
                 }
-                else
-                    player.outputChatBox("Ошибка какая то. в логе мб")
             })
+            player.outputChatBox("Для фракции "+doc.name+" добавлена точка спавна")
         }  
     },
     {
@@ -126,10 +129,7 @@ exports.obj = [
         target: true,
         hint: "/maketester [id или часть ника]",
         execute: (player, _, target) => {
-            Player.findOne({rgid: target.rgscId, name: target.name}, (err, doc) => {
-                doc.player_level = lvls.TESTER
-                doc.save()
-            })
+            players.updateDefault(player, {player_level: lvls.TESTER})
             target.setVariable("level", lvls.TESTER)
             player.outputChatBox("Вы назначили "+target.name+" тестером")
             target.outputChatBox("Создатель проекта "+player.name+" назначил вас тестером")
@@ -141,10 +141,7 @@ exports.obj = [
         target: true,
         hint: "/destroy [id или часть ника]",
         execute: (player, _, target) => {
-            Player.findOne({rgid: target.rgscId, name: target.name}, (err, doc) => {
-                doc.player_level = lvls.PLAYER
-                doc.save()
-            })
+            players.updateDefault(player, {player_level: lvls.PLAYER})
             target.setVariable("level", lvls.PLAYER)
             player.outputChatBox("Вы сняли "+target.name+" с должности тестера")
             target.outputChatBox("Создатель проекта "+player.name+" сналя вас с должности тестера")

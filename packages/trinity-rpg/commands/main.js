@@ -1,6 +1,7 @@
 const normalizedPath = require("path").join(__dirname);
 const utils = require("../utils")
 const log = require("../functions/cmdLog").add
+const color = require("../chat-colors.json")
 let cmdList = []
 require("fs").readdirSync(normalizedPath).forEach(function(file) {
     if(file != "main.js"){
@@ -21,29 +22,29 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                         if(player.getVariable('level') >= cmd.lvl){
                             //если в конструкторе указание количество параметров команды
                             if(cmd.args && params.length-1 < cmd.args)
-                                return player.outputChatBox(cmd.hint ? "Подсказка: "+cmd.hint : "Передано неверное количество аргументов")
+                            return player.outputChatBox(color.GREY+(cmd.hint ? "Подсказка: "+cmd.hint : "Передано неверное количество аргументов"))
 
                             //если в конструкторе есть указание
                             if(cmd.target){
                                 //если оно-таки есть, значит, параметров должно быть 2. Если нет то иди нахуй с подсказкой
                                 if(params.length < 2)
-                                    return player.outputChatBox(cmd.hint ? "Подсказка: "+cmd.hint : "Передано неверное количество аргументов")
+                                    return player.outputChatBox(color.GREY+(cmd.hint ? "Подсказка: "+cmd.hint : "Передано неверное количество аргументов"))
 
                                 //чекаем на челика
                                 const foundPlayer = utils.findPlayerByIdOrNickname(params[1])
 
                                 if (!foundPlayer)
-                                    return player.outputChatBox("По указанным параметрам не найдено игроков")
+                                    return player.outputChatBox(color.GREY+"По указанным параметрам не найдено игроков")
 
                                 if(foundPlayer.length)
-                                    return player.outputChatBox("По указанным параметрам найдено несколько игроков")
+                                    return player.outputChatBox(color.GREY+"По указанным параметрам найдено несколько игроков")
                                 
                                 params[1] = foundPlayer
                             }
                             if(cmd.fulltext === undefined)
                                 params[0] = trigger
                             if(cmd.text_non_empty && (!params[0] || params[0].trim() == ""))
-                                return player.outputChatBox(cmd.hint ? "Подсказка: "+cmd.hint : "Текст не может быть пустым")
+                                return player.outputChatBox(color.GREY+(cmd.hint ? "Подсказка: "+cmd.hint : "Текст не может быть пустым"))
 
                             if(cmd.fulltext)
                                 log("CHAT", player.name, trigger, Date.now(), params[0])
@@ -53,7 +54,7 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
                             cmd.execute(player, ...params)
                         }
                         else
-                            player.outputChatBox("У вас нет доступа к этой команде")
+                            player.outputChatBox(color.GREY+"У вас нет доступа к этой команде")
                     }
                     cmdList.push(trigger)
                     mp.events.addCommand(trigger, f)

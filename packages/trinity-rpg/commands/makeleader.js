@@ -1,6 +1,6 @@
 const lvls = require("../lvls")
-const Fraction = require("../db_models/Fraction")
-const Player = require("../db_models/Player")
+const fractions = require("../db_worker/fractions")
+const players = require("../db_worker/players")
 const {sendToAdmins} = require("../utils")
 module.exports = {
 obj: [
@@ -13,18 +13,15 @@ obj: [
         execute: async (player, _, targ, idx)=> {
             if(isNaN(idx) || isNaN(parseInt(idx)))
                 return player.outputChatBox("IDX должен быть числом: ")
+
             idx = parseInt(idx)
-            const fract = await Fraction.findOne({idx})
+            const fract = await fractions.getByIdx(idx)
+
             if(!fract)
                 return player.outputChatBox("Не найдена такая фракция")
-            Fraction.findOne({idx}, (e, doc) => {
-                doc.leader = targ.getVariable('uid')
-                doc.save()
-            })
-            Player.findOne({_id: targ.getVariable('uid')}, (e, doc) => {
-                doc.fraction = idx
-                doc.save()
-            })
+
+            fractions.update(idx, {leader: targ.getVariable('uid')})
+            players.updateCustomByUid(targ, { fraction: idx })
             targ.setVariable('fraction', idx)
 
             sendToAdmins(`Администратор ${player.name} назначил ${targ.name} лидером ${fract.name}`)

@@ -1,4 +1,4 @@
-const Fraction = require("../db_models/Fraction")
+const Fraction = require("../db_worker/db_models/Fraction")
 let fractions = Fraction.find()
 
 function getById(id){
