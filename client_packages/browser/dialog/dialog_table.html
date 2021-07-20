@@ -22,7 +22,6 @@
         .dialog{
             border-radius: 5%;
             position: relative;
-            
             border: 2px solid #2980b9;
             background-color: #bdc3c7;
             width: 50%;
@@ -68,19 +67,46 @@
             font-weight: 600;
             padding-top: 20px;
         }
+        .headers{
+            margin-top: 1rem;
+
+        }
+        .table{
+            height: 90%;
+            width: 95%;
+            margin: 0 auto;
+            overflow-y: scroll;
+        }
         table {
             color: #2c3e50;
             margin: 0 auto;
-            margin-top: 3rem;
-            font-family: arial, sans-serif;
             border-collapse: collapse;
-            width: 90%;
+            width: 98%;
+        }
+
+        ::-webkit-scrollbar {
+            width: 15px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-color: #3498db;
+        }
+
+        ::-webkit-scrollbar-track{
+            background-color: #dddddd;
+            border-radius: 10px;
+        }
+        table th {
+            position: -webkit-sticky;
+            position: sticky;
+            background-color: #bdc3c7;
+            top: 0;
+            z-index: 10;
         }
 
         td, th {
-            border: 1px solid #dddddd;
-            border-left: none;
-            border-right: none;
+
             text-align: left;
             padding: 8px;
         }
@@ -99,17 +125,20 @@
             <div class="title">
                 <!-- TEXT TO INSERT -->
             </div>
-            <table>
-                <!-- DATA TO INSERT -->
-            </table>
+            <div class="table">
+                <table>
+                    <!-- DATA TO INSERT -->
+                </table>
+            </div>
+            
         </div>
     </div>
     <script>
         const table = document.getElementsByTagName("table")[0]
         const title = document.getElementsByClassName("title")[0]
-        const close = document.getElementsByTagName("btn-close")[0]
+        const btn = document.getElementsByClassName("btn-close")[0]
 
-        close.addEventListener('click', () => {
+        btn.addEventListener('click', () => {
             mp.trigger("closeDialog")
         })
 
@@ -134,18 +163,54 @@
             data.headers.forEach(e => {
                 text += "<th>"+e+"</th>"
             })
-            text += "</tr>"
-            
-            data.cols.forEach(e => {
+            text += "</tr></tbody>"
+            //table_headers.innerHTML = text
+           
+            data.cols.forEach((e, i) => {
                 text += "<tr>"
                 e.forEach(d => {
-                    text += "<td>"+d+"</td>"
+                    if(d.c)
+                        text += "<td><span style='color: #"+d.c+";'>"+d.v+"</td>"
+                    else
+                        text += "<td>"+d+"</td>"
                 })
                 text += "</tr>"
             })
             text += "</tbody>"
             table.innerHTML = text
         }
+        function test(){
+            fillTitle("Чатлог игрока Rudy_Wade")
+            fillData({
+                headers:["Время", "Чат", "Текст"],
+                cols:[
+                    ["[22:23:31]", "PM > papercut", "Панику не наводите про онлайн"],
+                    ["[22:24:31]", "C", "Да"],
+                    ["[22:25:31]", "A", "q"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                    ["[22:26:31]", "ESAY", "Проходит тусовка на пляже Santa Maria. Принимай участие и ты! /wapr /tp"],
+                ]
+            })
+        }
+        test()
     </script>
 </body>
 </html>
