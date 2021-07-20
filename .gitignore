@@ -5,6 +5,5 @@ linux_x64tar.gz
 ragemp-server.exe
 bin/
 ragemp-srv/
-.listcache
+client_packages/.listcache
 pos.txt
-.listcache
