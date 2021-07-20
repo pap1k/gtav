@@ -1,4 +1,4 @@
-const Fractions = require("../db_models/Fraction")
+const Fractions = require("../db_worker/db_models/Fraction")
 module.exports = {
     create: async (idx, name, pos) => {
         const f = await Fractions.find({idx})

@@ -1,6 +1,6 @@
-const Player = require("../db_models/Player")
+
+const players = require("../db_worker/players")
 module.exports = (player, coords) => {
-    const p = Player.findOne({name: player.name})
-    p.update({spawn: coords})
+    players.updateDefault(player, {spawn: coords})
     player.setVariable('spawnpoint', new mp.Vector3(coords.x, coords.y, coords.z))
 }
