@@ -133,6 +133,11 @@
         const table = document.getElementsByTagName("table")[0]
         const title = document.getElementsByClassName("title")[0]
         const btn = document.getElementsByClassName("btn-close")[0]
+        
+        document.addEventListener("keypress", e => {
+            if(e.key == "Escape")
+                mp.trigger("closeDialog")
+        })
 
         btn.addEventListener('click', () => {
             mp.trigger("closeDialog")
@@ -156,7 +161,6 @@
             *
             */
             let text = "<tbody><tr>"
-            alert(data)
             data = JSON.parse(data)
 
             data.headers.forEach(e => {

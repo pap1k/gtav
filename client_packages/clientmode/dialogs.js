@@ -13,6 +13,10 @@ mp.events.add("showDialog", (style, title, data) => {
 })
 
 mp.events.add("closeDialog", () => {
-    mp.gui.cursor.show(false, false)
-    browser.destroy()
+    if(browser){
+        mp.gui.cursor.show(false, false)
+        browser.destroy()
+        browser = null
+    }
+    
 })
