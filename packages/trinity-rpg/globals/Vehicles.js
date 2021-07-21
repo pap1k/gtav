@@ -725,4 +725,14 @@ const vehicleHashes = {
 }
 const Vehicles = Object.entries(vehicleHashes)
 
-module.exports = Vehicles
+module.exports = {
+    Vehicles,
+    findByName: name => {
+        name = name.toLowerCase()
+        if(vehicleHashes[name])
+            return vehicleHashes[name]
+        for(veh in vehicleHashes)
+            if(veh.startsWith(name))
+                return vehicleHashes[veh]
+    }
+}

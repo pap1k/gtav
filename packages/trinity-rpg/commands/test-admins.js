@@ -1,21 +1,34 @@
 const lvls = require("../lvls")
 const fractions = require("../db_worker/fractions")
 const players = require("../db_worker/players")
+const {Vehicles, findByName} = require("../globals/Vehicles")
 var exports = module.exports = {}
 exports.obj = [
     {
         triggers: ["veh", "car"],
         lvl: lvls.TESTER,
+        args: 1,
+        hint: "/veh [id]",
         execute: (player, _, vehName) => {
-            if (vehName && vehName.trim().length > 0) {
-                if(vehName == "1")
-                    vehName = "oppressor2"
-                let pos = player.position
-                pos.x += 3
-                mp.vehicles.new(vehName, pos)
-            } else {
-                player.outputChatBox("Подсказка: /veh [id]")
+            if(vehName == "a")
+                vehName = "oppressor2"
+            if(parseInt(vehName)){
+                if(Vehicles[vehName])
+                    vehName = Vehicles[vehName][1]
+                else
+                    return player.outputChatBox("Не найдено ТС с таким ID")
             }
+            else{
+                let foundHash = findByName(vehName) 
+                if(foundHash)
+                    vehName = foundHash
+                else
+                    return player.outputChatBox("Не найдено ТС с таким названием")
+            } 
+            let pos = player.position
+            pos.x += 1
+            pos.z += 1
+            mp.vehicles.new(vehName, pos)
         }
     },
     {
@@ -28,16 +41,16 @@ exports.obj = [
                 return player.outputChatBox("Ошибка: id фракции должен быть числом")
             if(num && !parseInt(num))
                 return player.outputChatBox("Ошибка: номе рточки должен быть числом")
-            const f = await fractions.getByIdx(idx)
-            if(f.length == 1){
+            const f = await fractions.getByIdx(parseInt(to))
+            if(f){
                 if(num){
-                    if(f[0].spawnpoints.length >= num)
-                        player.position = new mp.Vector3(f[0].spawnpoints[num-1].x, f[0].spawnpoints[num-1].y, f[0].spawnpoints[num-1].z)
+                    if(f.spawnpoints.length >= num)
+                        player.position = new mp.Vector3(f.spawnpoints[num-1].x, f.spawnpoints[num-1].y, f.spawnpoints[num-1].z)
                     else
                         player.outputChatBox("У фракции нет спавна с таким номером")
                 }
                 else
-                    player.position = new mp.Vector3(f[0].spawnpoints[0].x, f[0].spawnpoints[0].y, f[0].spawnpoints[0].z)
+                    player.position = new mp.Vector3(f.spawnpoints[0].x, f.spawnpoints[0].y, f.spawnpoints[0].z)
             }
             else
                 player.outputChatBox("Не удалось найти фракцию с таким IDX")

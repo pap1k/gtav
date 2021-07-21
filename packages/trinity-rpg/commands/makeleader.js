@@ -15,17 +15,18 @@ obj: [
                 return player.outputChatBox("IDX должен быть числом: ")
 
             idx = parseInt(idx)
-            const fract = await fractions.getByIdx(idx)
+            const f = await fractions.getByIdx(idx)
 
-            if(!fract)
+            if(!f)
                 return player.outputChatBox("Не найдена такая фракция")
 
             fractions.update(idx, {leader: targ.getVariable('uid')})
-            players.updateCustomByUid(targ, { fraction: idx })
             targ.setVariable('fraction', idx)
+            targ.setVariable('spawnpoint', new mp.Vector3(f.spawnpoints[0].x, f.spawnpoints[0].y, f.spawnpoints[0].z))
+            players.updateCustomByUid(targ, { fraction: idx })
 
-            sendToAdmins(`Администратор ${player.name} назначил ${targ.name} лидером ${fract.name}`)
-            targ.outputChatBox(`Администратор ${player.name} назначил вас лидером ${fract.name}`)
+            sendToAdmins(`Администратор ${player.name} назначил ${targ.name} лидером ${f.name}`)
+            targ.outputChatBox(`Администратор ${player.name} назначил вас лидером ${f.name}`)
         }
     }   
 ]
