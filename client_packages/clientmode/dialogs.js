@@ -3,18 +3,16 @@ const STYLES = {
 }
 let browser
 
-mp.events.add("showDialog", (style, data) => {
-    data = JSON.parse(data)
+mp.events.add("showDialog", (style, title, data) => {
     if(STYLES[style]){
-        setTimeout(()=>{
-            mp.gui.cursor.show(true, true)
-        }, 0)
-        browser = mp.browsers.new('package://browser/dialog/dialog'+STYLES[style]+'.html')
-        browser.execute('fillTitle('+data.title+')')
-        browser.execute('fillData('+data.data+')')
+        browser = mp.browsers.new('package://browser/dialog/dialog_'+STYLES[style]+'.html')
+        browser.execute("mp.invoke('focus', true)");
+        browser.execute(`fillTitle("${title}")`)
+        browser.execute(`fillData('${data}')`)
     }
 })
 
 mp.events.add("closeDialog", () => {
+    mp.gui.cursor.show(false, false)
     browser.destroy()
 })

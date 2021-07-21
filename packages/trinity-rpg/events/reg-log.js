@@ -62,7 +62,7 @@ async function authAndSpawn(player, dbplayer){
     player.call('hideAllBrowsers')
     if(player.getVariable('fraction') != 0){
         const f = await fractions.getByIdx(dbplayer.fraction)
-        if(f.length == 1){
+        if(f){
             player.position = new mp.Vector3(f[0].spawnpoints[0].x, f[0].spawnpoints[0].y, f[0].spawnpoints[0].z)
         }
         else
