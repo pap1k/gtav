@@ -124,40 +124,19 @@
         }
 
         function fillData(data){
-            /*
-            * {
-                headers:[
-                    "TEXT"
-                ],
-                cols:[
-                    [txt11, txt12],
-                    [txt21, txt22]
-                ]
-            }
-            *
-            */
-            let text = "<tbody><tr>"
-            data = JSON.parse(data)
-
-            data.headers.forEach(e => {
-                text += "<th>"+e+"</th>"
-            })
-            text += "</tr></tbody>"
-            //table_headers.innerHTML = text
-           
-            data.cols.forEach((e, i) => {
-                text += "<tr>"
-                e.forEach(d => {
-                    if(d.c)
-                        text += "<td><span style='color: #"+d.c+";'>"+d.v+"</td>"
-                    else
-                        text += "<td>"+d+"</td>"
-                })
-                text += "</tr>"
-            })
-            text += "</tbody>"
-            table.innerHTML = text
+            
+            data_elem.innerHTML = data
         }
+
+        function test(){
+            fillTitle("Автомобиль Infernus")
+            fillData(`
+                Автомобиль - Dinghy
+                ID - dinghy
+                Хеш - 0x3d961290
+            `)
+        }
+        test()
     </script>
 </body>
 </html>
