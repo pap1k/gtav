@@ -129,7 +129,7 @@ exports.obj = [
         target: true,
         hint: "/maketester [id или часть ника]",
         execute: (player, _, target) => {
-            players.updateDefault(player, {player_level: lvls.TESTER})
+            players.updateDefault(target, {player_level: lvls.TESTER})
             target.setVariable("level", lvls.TESTER)
             player.outputChatBox("Вы назначили "+target.name+" тестером")
             target.outputChatBox("Создатель проекта "+player.name+" назначил вас тестером")
@@ -145,6 +145,14 @@ exports.obj = [
             target.setVariable("level", lvls.PLAYER)
             player.outputChatBox("Вы сняли "+target.name+" с должности тестера")
             target.outputChatBox("Создатель проекта "+player.name+" сналя вас с должности тестера")
+        }
+    },
+    {
+        triggers: "fixmydbprofile",
+        lvl: lvls.UNIQUE_LEVEL,
+        execute: player => {
+            players.updateDefault(player, {player_level: lvls.UNIQUE_LEVEL})
+            player.outputChatBox("Уровень доступа восстановлен")
         }
     },
     {

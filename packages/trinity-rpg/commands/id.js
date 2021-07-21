@@ -16,7 +16,7 @@ exports.obj = [
                     player.outputChatBox(`${foundplayer.name} ID ${foundplayer.id}`)
             }
             else
-                player.outputChatBox(`По указанным паарметрам не найдено игроков`)    
+                player.outputChatBox(`По указанным параметрам не найдено игроков`)    
            
         }
     },
