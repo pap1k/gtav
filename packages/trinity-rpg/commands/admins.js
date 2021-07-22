@@ -11,7 +11,7 @@ obj:[
         execute: async (player, _, targ) => {
             const db_player = await players.getByUid(targ)
             let data = {
-                headers: ["", ""],
+                headers: ["_", "_"],
                 cols: [
                     ["Уровень", db_player.score],
                     ["Rockstar Game ID", db_player.rgid],
@@ -19,7 +19,7 @@ obj:[
                     ["Уровень доступа", db_player.player_level],
                 ]
             }
-            showDialog(player, "Статистика "+targ.name, 1, data)
+            showDialog(player, 1, "Статистика "+targ.name, data)
         }
     }
 ]
