@@ -1,9 +1,9 @@
-const Vehicle = require("/db_models/Vehicle")
+const Vehicle = require("./db_models/Vehicle")
 
 module.exports = {
     getAll: async () => {
-        const vehs = await Vehicle.find()
-        return vehs
+        const v = await Vehicle.find()
+        return v
     },
     getByUid: async (veh) => {
         

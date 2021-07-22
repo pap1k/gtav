@@ -726,7 +726,14 @@ const vehicleHashes = {
 const Vehicles = Object.entries(vehicleHashes)
 
 const vehicles = require("../db_worker/vehicles")
-let loaded = vehicles.getAll()
+let loaded
+
+async function fill(){
+    loaded = await vehicles.getAll()
+    console.log("fill", loaded)
+} 
+
+fill()
 
 module.exports = {
     Vehicles,
@@ -738,7 +745,6 @@ module.exports = {
             if(veh.startsWith(name))
                 return vehicleHashes[veh]
     },
-    Loaded: loaded,
     spawn: (veh, pos) => {
         loaded.push(vehicles.create(veh, pos))
         mp.vehicles.new(veh, pos)
