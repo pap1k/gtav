@@ -86,41 +86,50 @@ $(document).ready(function()
 {
     chat.container = $("#chat ul#chat_messages");
     hide();
-    $(".ui_element").show();
-    
+    $(".ui_element").show();    
+    for (let i = 0; i < 20; i++) {
+        chatAPI.push('');
+    }
+    chatAPI.push('Приветствуем вас на Trinity RPG! Приятной игры!!!');
     $("body").keydown(function(event)
-    {
-        if (event.which == 84 || event.which == 117 && chat.input == null
-            && chat.active == true) {
-            enableChatInput(true);
-            event.preventDefault();
-            show();
-        }
-        else if (event.which == 13 && chat.input != null) {
-            var value = chat.input.children("input").val();
-
-            if (value.length > 0) {
-                chat.previous = value;
-                if (value[0] == "/") {
-                    value = value.substr(1);
-
-                    if (value.length > 0 && value.length <= 100)
-                        mp.invoke("command", value);
-                }
-                else {
-                    if (value.length <= 100)
-                        mp.invoke("chatMessage", value);
-                }
+    {   
+        if (chat.input == null && chat.active == true) {
+            if (event.which == 84 || event.which == 117 && chat.input == null && chat.active == true) {
+                enableChatInput(true);
+                event.preventDefault();
+                show();
             }
-            enableChatInput(false);
-            hide();
-        }
-        else if (event.which == 27 || event.which == 117 && chat.input != null) {
-            enableChatInput(false);
-            hide();
-        }
-        else if (event.which == 38 && chat.input != null) {
-            chat.input.children("input").val(chat.previous);
+        } else {
+            if (event.which == 13) {
+                var value = chat.input.children("input").val();
+
+                if (value.length > 0) {
+                    chat.previous = value;
+                    if (value[0] == "/") {
+                        value = value.substr(1);
+
+                        if (value.length > 0 && value.length <= 100)
+                            mp.invoke("command", value);
+                    }
+                    else {
+                        if (value.length <= 100)
+                            mp.invoke("chatMessage", value);
+                    }
+                }
+                enableChatInput(false);
+                hide();
+            }
+            else if (event.which == 27) {
+                enableChatInput(false);
+                hide();
+            }
+            else if (event.which == 117) {
+                enableChatInput(false);
+                hide();
+            }
+            else if (event.which == 38) {
+                chat.input.children("input").val(chat.previous);
+            }
         }
     });
 });
