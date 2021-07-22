@@ -63,7 +63,7 @@ async function authAndSpawn(player, dbplayer){
     if(player.getVariable('fraction') != 0){
         const f = await fractions.getByIdx(dbplayer.fraction)
         if(f){
-            player.position = new mp.Vector3(f.spawnpoints.x, f.spawnpoints.y, f.spawnpoints[0].z)
+            player.position = new mp.Vector3(f.spawnpoints[0].x, f.spawnpoints[0].y, f.spawnpoints[0].z)
         }
         else
         //TODO: CHOOSE ONE OF SPAWNS

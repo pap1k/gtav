@@ -162,7 +162,7 @@
             */
             let text = "<tbody><tr>"
             data = JSON.parse(data)
-
+            mp.gui.chat.push(data)
             data.headers.forEach(e => {
                 text += "<th>"+e+"</th>"
             })
