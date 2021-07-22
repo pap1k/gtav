@@ -7,7 +7,7 @@ let chat =
     active: true,
     timer: null,
     previous: "",
-	hide_chat: 15*1000 // 15 - seconds
+	hide_chat: 5000 // 15 - seconds
 };
 
 function enableChatInput(enable)
@@ -89,12 +89,12 @@ $(document).ready(function()
     $(".ui_element").show();
     chatAPI.push("Multiplayer started");
     let step;
-    for (step = 0; step < 21; step++) {
+    for (step = 0; step < 10; step++) {
         chatAPI.push("");
     }
     $("body").keydown(function(event)
     {
-        if (event.which == 84 && chat.input == null
+        if (event.which == 84 || event.which == 117 && chat.input == null
             && chat.active == true) {
             enableChatInput(true);
             event.preventDefault();
@@ -119,7 +119,7 @@ $(document).ready(function()
             enableChatInput(false);
             hide();
         }
-        else if (event.which == 27 && chat.input != null) {
+        else if (event.which == 27 || event.which == 117 && chat.input != null) {
             enableChatInput(false);
             hide();
         }
