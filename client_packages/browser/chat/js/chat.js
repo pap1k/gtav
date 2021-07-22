@@ -9,6 +9,7 @@ let chat =
     previous: "",
 	hide_chat: 15*1000 // 15 - seconds
 };
+
 function enableChatInput(enable)
 {
 	if(chat.active == false
@@ -35,7 +36,8 @@ function enableChatInput(enable)
         }
     }
 }
-var chatAPI =
+
+let chatAPI =
 {
 	push: (text) =>
 	{
@@ -86,6 +88,10 @@ $(document).ready(function()
     hide();
     $(".ui_element").show();
     chatAPI.push("Multiplayer started");
+    let step;
+    for (step = 0; step < 21; step++) {
+        chatAPI.push("");
+    }
     $("body").keydown(function(event)
     {
         if (event.which == 84 && chat.input == null
@@ -122,3 +128,9 @@ $(document).ready(function()
         }
     });
 });
+
+let api = {"chat:push": chatAPI.push, "chat:clear": chatAPI.clear, "chat:activate": chatAPI.activate, "chat:show": chatAPI.show};
+for(let fn in api)
+{
+      mp.events.add(fn, api[fn]);
+}
