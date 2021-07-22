@@ -1,24 +1,38 @@
 const lvls = require("../lvls")
-const {findPlayerByIdOrNickname} = require("../utils")
-const Fraction = require("../db_models/Fraction")
-const Player = require("../db_models/Player")
+const fractions = require("../db_worker/fractions")
+const players = require("../db_worker/players")
+const {Vehicles, findByName, spawn} = require("../globals/Vehicles")
 var exports = module.exports = {}
 exports.obj = [
     {
         triggers: ["veh", "car"],
         lvl: lvls.TESTER,
+        args: 1,
+        hint: "/veh [id]",
         execute: (player, _, vehName) => {
-            if (vehName && vehName.trim().length > 0) {
-                let pos = player.position
-                pos.x += 3
-                mp.vehicles.new(vehName, pos)
-            } else {
-                player.outputChatBox("Подсказка: /veh [id]")
+            if(vehName == "a")
+                vehName = "oppressor2"
+            if(parseInt(vehName)){
+                if(Vehicles[vehName])
+                    vehName = Vehicles[vehName][1]
+                else
+                    return player.outputChatBox("Не найдено ТС с таким ID")
             }
+            else{
+                let foundHash = findByName(vehName) 
+                if(foundHash)
+                    vehName = foundHash
+                else
+                    return player.outputChatBox("Не найдено ТС с таким названием")
+            } 
+            let pos = player.position
+            pos.x += 1
+            pos.z += 1
+            spawn(vehName, pos)
         }
     },
     {
-        triggers: ["fspawn"],
+        triggers: "fspawn",
         lvl: lvls.ALL_ADMINS,
         args: 1,
         hint: "/fspawn [IDX фракции] [номер точки]",
@@ -26,24 +40,24 @@ exports.obj = [
             if(!parseInt(to))
                 return player.outputChatBox("Ошибка: id фракции должен быть числом")
             if(num && !parseInt(num))
-                return player.outputChatBox("Ошибка: номерточки должен быть числом")
-            const f = await Fraction.find({idx: parseInt(to)})
-            if(f.length == 1){
+                return player.outputChatBox("Ошибка: номе рточки должен быть числом")
+            const f = await fractions.getByIdx(parseInt(to))
+            if(f){
                 if(num){
-                    if(f[0].spawnpoints.length >= num)
-                        player.position = new mp.Vector3(f[0].spawnpoints[num-1].x, f[0].spawnpoints[num-1].y, f[0].spawnpoints[num-1].z)
+                    if(f.spawnpoints.length >= num)
+                        player.position = new mp.Vector3(f.spawnpoints[num-1].x, f.spawnpoints[num-1].y, f.spawnpoints[num-1].z)
                     else
                         player.outputChatBox("У фракции нет спавна с таким номером")
                 }
                 else
-                    player.position = new mp.Vector3(f[0].spawnpoints[0].x, f[0].spawnpoints[0].y, f[0].spawnpoints[0].z)
+                    player.position = new mp.Vector3(f.spawnpoints[0].x, f.spawnpoints[0].y, f.spawnpoints[0].z)
             }
             else
                 player.outputChatBox("Не удалось найти фракцию с таким IDX")
         }
     },
     {
-        triggers: ["createfraction"],
+        triggers: "createfraction",
         lvl: lvls.UNIQUE_LEVEL,
         args: 2,
         hint: "/createfraction [idx] [название]",
@@ -56,7 +70,7 @@ exports.obj = [
         }
     },
     {
-        triggers: ["deletefraction"],
+        triggers: "deletefraction",
         lvl: lvls.UNIQUE_LEVEL,
         args: 1,
         hint: "/deletefraction [idx]",
@@ -69,22 +83,25 @@ exports.obj = [
         }
     },
     {
-        triggers: ["addspawnpoint"],
+        triggers: "addspawnpoint",
         lvl: lvls.TESTER,
         args: 1,
         hint: "/addspawnpoint [IDX фракции]",
         execute: async (player, _, idx) => {
             if(!parseInt(idx))
                 return player.outputChatBox("idx должен быть числом")
-            Fraction.findOne({idx: parseInt(idx)}, (err, doc) => {
-                if(!err){
-                    doc.spawnpoints.push({x: player.position.x, y: player.position.y, z: player.position.z})
-                    doc.save()
-                    player.outputChatBox("Для фракции "+doc.name+" добавлена точка спавна")
+            
+            fractions.update(idx, {
+                spawnpoints: {
+                    v: {
+                        x: player.position.x,
+                        y: player.position.y,
+                        z: player.position.z
+                    },
+                    f: "push"
                 }
-                else
-                    player.outputChatBox("Ошибка какая то. в логе мб")
             })
+            player.outputChatBox("Для фракции "+doc.name+" добавлена точка спавна")
         }  
     },
     {
@@ -109,7 +126,7 @@ exports.obj = [
         }
     },
     {
-        triggers: ["tppos"],
+        triggers: "tppos",
         lvl: lvls.TESTER,
         execute: (player, _, x, y, z) => {
             if (!isNaN(parseFloat(x)) && !isNaN(parseFloat(y)) && !isNaN(parseFloat(z))){
@@ -120,38 +137,50 @@ exports.obj = [
         }
     },
     {
-        triggers: ["maketester"],
+        triggers: "maketester",
         lvl: lvls.UNIQUE_LEVEL,
         target: true,
         hint: "/maketester [id или часть ника]",
         execute: (player, _, target) => {
-            Player.findOne({rgid: target.rgscId, name: target.name}, (err, doc) => {
-                doc.player_level = lvls.TESTER
-                doc.save()
-            })
+            players.updateDefault(target, {player_level: lvls.TESTER})
             target.setVariable("level", lvls.TESTER)
             player.outputChatBox("Вы назначили "+target.name+" тестером")
             target.outputChatBox("Создатель проекта "+player.name+" назначил вас тестером")
         }
     },
     {
-        triggers: ["destroy"],
+        triggers: "destroy",
         lvl: lvls.UNIQUE_LEVEL,
         target: true,
         hint: "/destroy [id или часть ника]",
         execute: (player, _, target) => {
-            Player.findOne({rgid: target.rgscId, name: target.name}, (err, doc) => {
-                doc.player_level = lvls.PLAYER
-                doc.save()
-            })
+            players.updateDefault(player, {player_level: lvls.PLAYER})
             target.setVariable("level", lvls.PLAYER)
             player.outputChatBox("Вы сняли "+target.name+" с должности тестера")
             target.outputChatBox("Создатель проекта "+player.name+" сналя вас с должности тестера")
         }
     },
     {
-        triggers: ["log"],
-        lvl:  lvls.PLAYER,
-        execute: player => console.log(player)
+        triggers: "fixmydbprofile",
+        lvl: lvls.UNIQUE_LEVEL,
+        execute: player => {
+            players.updateDefault(player, {player_level: lvls.UNIQUE_LEVEL})
+            player.outputChatBox("Уровень доступа восстановлен")
+        }
+    },
+    {
+        triggers: "agm",
+        lvl: lvls.ALL_ADMINS,
+        execute: player => {
+            const v = player.getVariable("agm")
+            if(agm){
+                player.outputChatBox("Вы включили AGM")
+                player.setVariable("agm", true)
+            }
+            else{
+                player.outputChatBox("Вы выключили AGM")
+                player.setVariable("agm", false)
+            }
+        }
     }
 ]

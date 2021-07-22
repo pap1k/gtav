@@ -6,4 +6,6 @@ ragemp-server.exe
 bin/
 conf.json
 ragemp-srv/
-.listcache
+pos.txt
+client_packages/.listcache
+

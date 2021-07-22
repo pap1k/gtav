@@ -1,4 +1,6 @@
-require("./clientmode/reglog")
 require("./clientmode/death")
-require("./clientmode/scoreboard")
 require("./clientmode/PrettyTags")
+require("./clientmode/reglog")
+require("./clientmode/scoreboard")
+require("./clientmode/statusBar")
+require('./clientmode/dialogs')

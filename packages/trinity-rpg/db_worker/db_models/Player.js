@@ -1,5 +1,5 @@
 const {Schema, model} = require("mongoose")
-const ssconf = require("../server-side-conf.json")
+const ssconf = require("../../server-side-conf.json")
 const schema = new Schema({
     name: {
         type: String,
