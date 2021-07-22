@@ -1,7 +1,7 @@
 const lvls = require("../lvls")
 const fractions = require("../db_worker/fractions")
 const players = require("../db_worker/players")
-const {Vehicles, findByName} = require("../globals/Vehicles")
+const {Vehicles, findByName, spawn} = require("../globals/Vehicles")
 var exports = module.exports = {}
 exports.obj = [
     {
@@ -28,7 +28,7 @@ exports.obj = [
             let pos = player.position
             pos.x += 1
             pos.z += 1
-            mp.vehicles.new(vehName, pos)
+            spawn(vehName, pos)
         }
     },
     {

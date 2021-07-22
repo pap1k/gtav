@@ -725,6 +725,9 @@ const vehicleHashes = {
 }
 const Vehicles = Object.entries(vehicleHashes)
 
+const vehicles = require("../db_worker/vehicles")
+let loaded = vehicles.getAll()
+
 module.exports = {
     Vehicles,
     findByName: name => {
@@ -734,5 +737,10 @@ module.exports = {
         for(veh in vehicleHashes)
             if(veh.startsWith(name))
                 return vehicleHashes[veh]
+    },
+    Loaded: loaded,
+    spawn: (veh, pos) => {
+        loaded.push(vehicles.create(veh, pos))
+        mp.vehicles.new(veh, pos)
     }
 }
