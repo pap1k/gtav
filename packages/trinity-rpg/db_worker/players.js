@@ -4,7 +4,7 @@ module.exports = {
     updateCustomByUid: function (player, fields){
         Player.findOne({_id: player.getVariable("uid")}, (e, doc) => {
             for(field in fields){
-                doc[field] = player.getVariable(fields[field])
+                doc[field] = player.getVariable(field)
             }
             doc.save()
         })

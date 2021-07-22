@@ -1,5 +1,6 @@
 const lvls = require("../lvls")
 const players = require("../db_worker/players")
+const showDialog = require("../functions/showDialog")
 
 module.exports = {
 obj:[
@@ -9,12 +10,17 @@ obj:[
         target: true,
         execute: async (player, _, targ) => {
             const db_player = await players.getByUid(targ)
-            //TODO: Output into dialog
-            player.outputChatBox(`Информация об игроке ${targ.name}`)
-            player.outputChatBox(`Rockstar Game ID ${db_player.rgid}`)
-            player.outputChatBox(`Уровень: ${db_player.score}`)
-            player.outputChatBox(`Уровень доступа ${db_player.player_level} | ${targ.getVariable("level")}`)
-            player.outputChatBox(`Фракция ${db_player.fraction}`)
+            let data = {
+                headers: ["", ""],
+                cols: [
+                    ["Уровень", db_player.score],
+                    ["Rockstar Game ID", db_player.rgid],
+                    ["Фракция", db_player.fraction],
+                    ["Уровень доступа", db_player.player_level],
+                ]
+            }
+            console.log(data)
+            showDialog(player, "Статистика "+targ.name, 1, data)
         }
     }
 ]
