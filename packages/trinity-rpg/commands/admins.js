@@ -19,7 +19,6 @@ obj:[
                     ["Уровень доступа", db_player.player_level],
                 ]
             }
-            console.log(data)
             showDialog(player, "Статистика "+targ.name, 1, data)
         }
     }
