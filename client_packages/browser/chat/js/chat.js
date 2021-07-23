@@ -98,6 +98,7 @@ $(document).ready(function()
     hide();
     $(".ui_element").show();
     pushWelcomeMessage();
+    chat.previous.push(' ');
     $("body").keydown(function(event)
     {   
         if (chat.input == null && chat.active == true) {
@@ -120,11 +121,14 @@ $(document).ready(function()
                         if (value.length > 0 && value.length <= 100){
                             if (value.match(/fontsize (.+)/)){
                                 $("#chat ul#chat_messages").css("font-size", value.match(/fontsize (.+)/)[1] + 'px');
-                                $("#chat input#chat_msg").css("font-size", value.match(/fontsize (.+)/)[1] + 'px');
-                            } else if (value == '/pagesize'){
-                                chatAPI.push('Команда находится в разработке!')
-                            } else if (value == '/timestamp'){
-                                chatAPI.push('Команда находится в разработке!')
+                            } else if (value.match(/fontsize (.+)/)){
+                                $("#chat ul#chat_messages").css("height", value.match(/pagesize (.+)/)[1] + 'px');
+                            } else if (value == 'timestamp'){
+                                if (chat.timestamp == true){
+                                    chat.timestamp = false
+                                } else {
+                                    chat.timestamp = true
+                                }
                             } else {
                                 mp.invoke("command", value);
                             }
@@ -150,12 +154,16 @@ $(document).ready(function()
                 chat.previous_count = 0;
             }
             else if (event.which == 38) {
-                chat.previous_count = chat.previous_count + 1;
-                chat.input.children("input").val(reversed[chat.previous_count]);
+                if (chat.previous_count <= chat.previous.length){
+                    chat.input.children("input").val(chat.previous[chat.previous_count]);
+                    chat.previous_count = chat.previous_count + 1;
+                }
             }
             else if (event.which == 40) {
-                chat.previous_count = chat.previous_count - 1;
-                chat.input.children("input").val(reversed[chat.previous_count]);
+                if (chat.previous_count > -1){
+                    chat.input.children("input").val(chat.previous[chat.previous_count]);
+                    chat.previous_count = chat.previous_count - 1;
+                }
             }
         }
     });
