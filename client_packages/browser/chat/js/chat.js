@@ -5,9 +5,11 @@ let chat =
 	input: null,
 	enabled: false,
     active: true,
+    timestamp: true,
     timer: null,
-    previous: "",
-	hide_chat: 5000 // 15 - seconds
+    previous: [],
+    previous_count: 0,
+	hide_chat: 10000
 };
 
 function enableChatInput(enable)
@@ -46,7 +48,15 @@ let chatAPI =
 		{
 			chat.container.children(":first").remove();
         }
-        chat.container.append("<li>" + text + "</li>");
+        if (chat.timestamp){
+            let date = new Date();  
+            let options = {   
+                hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+            };  
+            chat.container.append("<li>[" + date.toLocaleTimeString("en-us", options) + "] " + text + "</li>");
+        } else {
+            chat.container.append("<li>" + text + "</li>");
+        }
         chat.container.scrollTop(9999);
 	},
 	clear: () =>
@@ -86,11 +96,8 @@ $(document).ready(function()
 {
     chat.container = $("#chat ul#chat_messages");
     hide();
-    $(".ui_element").show();    
-    for (let i = 0; i < 20; i++) {
-        chatAPI.push('');
-    }
-    chatAPI.push('Приветствуем вас на Trinity RPG! Приятной игры!!!');
+    $(".ui_element").show();
+    pushWelcomeMessage();
     $("body").keydown(function(event)
     {   
         if (chat.input == null && chat.active == true) {
@@ -102,14 +109,26 @@ $(document).ready(function()
         } else {
             if (event.which == 13) {
                 var value = chat.input.children("input").val();
-
+                
                 if (value.length > 0) {
-                    chat.previous = value;
+                    chat.previous = chat.previous.reverse()
+                    chat.previous.push(value);
+                    chat.previous = chat.previous.reverse()
                     if (value[0] == "/") {
                         value = value.substr(1);
 
-                        if (value.length > 0 && value.length <= 100)
-                            mp.invoke("command", value);
+                        if (value.length > 0 && value.length <= 100){
+                            if (value.match(/fontsize (.+)/)){
+                                $("#chat").css("font-size", value.match(/fontsize (.+)/)[1] + ' px');
+                                chatAPI.push('Команда находится в разработке!')
+                            } else if (value == '/pagesize'){
+                                chatAPI.push('Команда находится в разработке!')
+                            } else if (value == '/timestamp'){
+                                chatAPI.push('Команда находится в разработке!')
+                            } else {
+                                mp.invoke("command", value);
+                            }
+                        }
                     }
                     else {
                         if (value.length <= 100)
@@ -118,21 +137,39 @@ $(document).ready(function()
                 }
                 enableChatInput(false);
                 hide();
+                chat.previous_count = 0;
             }
             else if (event.which == 27) {
                 enableChatInput(false);
                 hide();
+                chat.previous_count = 0;
             }
             else if (event.which == 117) {
                 enableChatInput(false);
                 hide();
+                chat.previous_count = 0;
             }
             else if (event.which == 38) {
-                chat.input.children("input").val(chat.previous);
+                chat.previous_count = chat.previous_count + 1;
+                chat.input.children("input").val(reversed[chat.previous_count]);
+            }
+            else if (event.which == 40) {
+                chat.previous_count = chat.previous_count - 1;
+                chat.input.children("input").val(reversed[chat.previous_count]);
             }
         }
     });
 });
+
+function pushWelcomeMessage() {
+    let text_to_send = '- '
+    for (let i = 0; i < 20; i++) {
+        chatAPI.push(text_to_send);
+        text_to_send = text_to_send + '- - - '
+    }
+    chatAPI.push('Приветствуем вас на Trinity RPG! Приятной игры!');
+    chatAPI.push(text_to_send);
+}
 
 let api = {"chat:push": chatAPI.push, "chat:clear": chatAPI.clear, "chat:activate": chatAPI.activate, "chat:show": chatAPI.show};
 for(let fn in api)

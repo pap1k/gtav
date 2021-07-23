@@ -22,7 +22,7 @@ body {
 
 @media screen and (min-height:166.9242658423493vh) {
 	#chat {
-		font-size: 18px!important;
+		font-size: 12px!important;
 		font-weight: 700
 	}
 }
@@ -78,5 +78,5 @@ body {
 	list-style-type: none;
 	direction: ltr;
 	text-align: left;
-	margin-left: 10px
+	margin-left: 15px
 }
