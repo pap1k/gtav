@@ -119,8 +119,8 @@ $(document).ready(function()
 
                         if (value.length > 0 && value.length <= 100){
                             if (value.match(/fontsize (.+)/)){
-                                $("#chat").css("font-size", value.match(/fontsize (.+)/)[1] + ' px');
-                                chatAPI.push('Команда находится в разработке!')
+                                $("#chat ul#chat_messages").css("font-size", value.match(/fontsize (.+)/)[1] + 'px');
+                                $("#chat input#chat_msg").css("font-size", value.match(/fontsize (.+)/)[1] + 'px');
                             } else if (value == '/pagesize'){
                                 chatAPI.push('Команда находится в разработке!')
                             } else if (value == '/timestamp'){
