@@ -56,9 +56,10 @@ async function authAndSpawn(player, dbplayer){
     player.setVariable('fraction', dbplayer.fraction)
     player.setVariable('spawnpoint', new mp.Vector3(dbplayer.spawn.x, dbplayer.spawn.y, dbplayer.spawn.z))
     player.setVariable('uid', dbplayer._id)
+    player.setVariable('onduty', false)
 
     mp.players.broadcast(`${color.GREY}${player.name} ID ${player.id} подключился к серверу`)
-    mp.players.call("updatePlayerColor", [player.id, [255, 255, 255]])
+    mp.players.call("updatePlayerColor", [JSON.stringify({"id": player.id, "color": [255, 255, 255]})])
 
     player.call('hideAllBrowsers')
     if(player.getVariable('fraction') != 0){

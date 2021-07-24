@@ -6,17 +6,19 @@ module.exports = {
         {
             triggers: ["duty"],
             fraction: conf.ANY,
-            execute: (player, fract) => {
-                //TOOD color player tag, change skin
-                if(player.getVariable('onduty')){
-                    player.setVariable('onduty', false)
-                    mp.players.call("updatePlayerColor", [player.id, [255, 255, 255]])
+            execute: (player) => {
+                //TOOD change skin
+                if(player.getVariable('onduty') === true){
+                    mp.players.call("updatePlayerColor", [JSON.stringify({"id": player.id, "color": [255, 255, 255]})])
                     mp.players.broadcastInRange(player.position, 5, `${colors.ME}${player.name} снял служебный костюм и вышел со смены`)
+                    return player.setVariable('onduty', false)
                 }
                 else{
-                    player.setVariable('onduty', true)
-                    mp.players.call("updatePlayerColor", [player.id, fColors[fract]])
+                    const c = fColors[player.getVariable("fraction")]
+                    const data = {"id": player.id, "color": [c[0], c[1], c[2]]}
+                    mp.players.call("updatePlayerColor", [JSON.stringify(data)])
                     mp.players.broadcastInRange(player.position, 5, `${colors.ME}${player.name} надел служебный костюм и вышел на смену`)
+                    return player.setVariable('onduty', true)
                 }
                 
             }

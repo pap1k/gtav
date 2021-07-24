@@ -57,6 +57,14 @@ exports.obj = [
         }
     },
     {
+        triggers: "getf",
+        lvl: lvls.ALL_ADMINS,
+        target: true,
+        execute: (p, _, t) => {
+            p.outputChatBox(t.getVariable("fraction"))
+        }
+    },
+    {
         triggers: "createfraction",
         lvl: lvls.UNIQUE_LEVEL,
         args: 2,

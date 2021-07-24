@@ -8,8 +8,10 @@ let playerColors = { }
 
 mp.nametags.enabled = false;
 
-mp.events.add('updatePlayerColor', (id, color) => {
-    playerColors[id] = color
+mp.events.add('updatePlayerColor', data => {
+    data = JSON.parse(data)
+    if(data.id == mp.players.local.id) return
+    playerColors[data.id] = [data.color[0], data.color[1], data.color[2], 255]
 })
 
 mp.events.add('render', (nametags) => {
@@ -29,10 +31,12 @@ mp.events.add('render', (nametags) => {
 			
             y -= scale * (0.0008 * (screenRes.y / 1080));
 			
-            mp.game.graphics.drawText(player.name, [x, y],
+            mp.game.graphics.drawText(
+                `${player.name} [${player.id}] (${playerColors[player.id][0]}, ${playerColors[player.id][1]}, ${playerColors[player.id][2]})\n${JSON.stringify(playerColors)}`,
+                [x, y],
             {
               font: 4,
-              color: isNaN(playerColors[player.id]) ? [255, 255, 255, 255] : playerColors[player.id],
+              color: playerColors[player.id] == undefined ? [255, 255, 255, 255] : playerColors[player.id],
               scale: [0.4, 0.4],
               outline: true
             });
