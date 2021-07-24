@@ -58,6 +58,7 @@ async function authAndSpawn(player, dbplayer){
     player.setVariable('uid', dbplayer._id)
 
     mp.players.broadcast(`${color.GREY}${player.name} ID ${player.id} подключился к серверу`)
+    mp.players.call("updatePlayerColor", [player.id, [255, 255, 255]])
 
     player.call('hideAllBrowsers')
     if(player.getVariable('fraction') != 0){

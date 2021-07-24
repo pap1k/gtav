@@ -4,7 +4,13 @@ const height = 0.0065;
 const border = 0.001;
 const color = [255,255,255,255];
 
+let playerColors = { }
+
 mp.nametags.enabled = false;
+
+mp.events.add('updatePlayerColor', (id, color) => {
+    playerColors[id] = color
+})
 
 mp.events.add('render', (nametags) => {
     const graphics = mp.game.graphics;
@@ -26,7 +32,7 @@ mp.events.add('render', (nametags) => {
             mp.game.graphics.drawText(player.name, [x, y],
             {
               font: 4,
-              color: [255, 255, 255, 255],
+              color: isNaN(playerColors[player.id]) ? [255, 255, 255, 255] : playerColors[player.id],
               scale: [0.4, 0.4],
               outline: true
             });
