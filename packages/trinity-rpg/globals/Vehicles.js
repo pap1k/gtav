@@ -757,6 +757,7 @@ module.exports = {
             newveh.setVariable("owner", v.owner)
             newveh.setVariable("owner_name", playername)
             newveh.setVariable("name", v.name)
+            newveh.setVariable("spawntime", Date.now())
             loaded.push(newveh)//not working
         })
     }
