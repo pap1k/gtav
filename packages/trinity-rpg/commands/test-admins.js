@@ -2,11 +2,9 @@ const lvls = require("../lvls")
 const fractions = require("../db_worker/fractions")
 const players = require("../db_worker/players")
 const Veh = require("../globals/Vehicles")
-const { truncate } = require("fs")
 var exports = module.exports = {}
 exports.obj = [
-    {
-        triggers: ["veh", "car"],
+    {triggers: ["veh", "car"],
         lvl: lvls.TESTER,
         args: 1,
         hint: "/veh [id]",
@@ -32,8 +30,7 @@ exports.obj = [
             Veh.spawn(vehName, pos, player.getVariable("uid"))
         }
     },
-    {
-        triggers: ["vinfo", "vehinfo"],
+    {triggers: ["vinfo", "vehinfo"],
         lvl: lvls.ALL_ADMINS,
         execute: player => {
             let closest
@@ -69,8 +66,7 @@ exports.obj = [
                 player.outputChatBox("Около вас не найдено ТС")
         }
     },
-    {
-        triggers: ["vinfonew"],
+    {triggers: ["vinfonew"],
         lvl: lvls.ALL_ADMINS,
         execute: player => {
             let closest
@@ -96,8 +92,7 @@ exports.obj = [
                 player.outputChatBox("Около вас не найдено ТС")
         }
     },
-    {
-        triggers: "fspawn",
+    {triggers: "fspawn",
         lvl: lvls.ALL_ADMINS,
         args: 1,
         hint: "/fspawn [IDX фракции] [номер точки]",
@@ -121,16 +116,14 @@ exports.obj = [
                 player.outputChatBox("Не удалось найти фракцию с таким IDX")
         }
     },
-    {
-        triggers: "getf",
+    {triggers: "getf",
         lvl: lvls.ALL_ADMINS,
         target: true,
         execute: (p, _, t) => {
             p.outputChatBox(t.getVariable("fraction"))
         }
     },
-    {
-        triggers: "createfraction",
+    {triggers: "createfraction",
         lvl: lvls.UNIQUE_LEVEL,
         args: 2,
         hint: "/createfraction [idx] [название]",
@@ -142,8 +135,7 @@ exports.obj = [
             player.outputChatBox(result)
         }
     },
-    {
-        triggers: "deletefraction",
+    {triggers: "deletefraction",
         lvl: lvls.UNIQUE_LEVEL,
         args: 1,
         hint: "/deletefraction [idx]",
@@ -155,8 +147,7 @@ exports.obj = [
             player.outputChatBox(result)
         }
     },
-    {
-        triggers: "addspawnpoint",
+    {triggers: "addspawnpoint",
         lvl: lvls.TESTER,
         args: 1,
         hint: "/addspawnpoint [IDX фракции]",
@@ -177,8 +168,7 @@ exports.obj = [
             player.outputChatBox("Для фракции "+doc.name+" добавлена точка спавна")
         }  
     },
-    {
-        triggers: ["weap", "weapon"],
+    {triggers: ["weap", "weapon"],
         lvl: lvls.TESTER,
         args: 1,
         execute: (player, _, weap) => {
@@ -186,8 +176,7 @@ exports.obj = [
             player.giveWeapon(weaponHash, 10000)
         }
     },
-    {
-        triggers: ["gweap", "ggun"],
+    {triggers: ["gweap", "ggun"],
         lvl: lvls.TESTER,
         target: true,
         hint: "/gweap [id] [оружие]",
@@ -198,8 +187,7 @@ exports.obj = [
             targ.outputChatBox("Тестер "+player.name+" выдал вам оружие")
         }
     },
-    {
-        triggers: "tppos",
+    {triggers: "tppos",
         lvl: lvls.TESTER,
         execute: (player, _, x, y, z) => {
             if (!isNaN(parseFloat(x)) && !isNaN(parseFloat(y)) && !isNaN(parseFloat(z))){
@@ -209,8 +197,7 @@ exports.obj = [
                 player.outputChatBox("Подсказка: /tppos [x] [y] [z]")
         }
     },
-    {
-        triggers: "maketester",
+    {triggers: "maketester",
         lvl: lvls.UNIQUE_LEVEL,
         target: true,
         hint: "/maketester [id или часть ника]",
@@ -221,8 +208,7 @@ exports.obj = [
             target.outputChatBox("Создатель проекта "+player.name+" назначил вас тестером")
         }
     },
-    {
-        triggers: "destroy",
+    {triggers: "destroy",
         lvl: lvls.UNIQUE_LEVEL,
         target: true,
         hint: "/destroy [id или часть ника]",
@@ -233,16 +219,14 @@ exports.obj = [
             target.outputChatBox("Создатель проекта "+player.name+" снял вас с должности тестера")
         }
     },
-    {
-        triggers: "fixmydbprofile",
+    {triggers: "fixmydbprofile",
         lvl: lvls.UNIQUE_LEVEL,
         execute: player => {
             players.updateDefault(player, {player_level: lvls.UNIQUE_LEVEL})
             player.outputChatBox("Уровень доступа восстановлен")
         }
     },
-    {
-        triggers: "agm",
+    {triggers: "agm",
         lvl: lvls.ALL_ADMINS,
         execute: player => {
             const v = player.getVariable("agm")

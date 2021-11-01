@@ -4,4 +4,5 @@ require("./clientmode/reglog")
 require("./clientmode/scoreboard")
 require("./clientmode/statusBar")
 require('./clientmode/dialogs')
-require('./clientmode/chat');
+require('./clientmode/chat')
+require('./clientmode/audio3D')
