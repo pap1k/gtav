@@ -6,11 +6,15 @@ const schema = new Schema({
         required: true
     },
     vehType:{
-        type: String,
+        type: Number,
         required: true
     },
     owner: {
         type: String,
+        required: true,
+    },
+    spawned: {
+        type: Boolean,
         required: true,
     },
     spawn: {

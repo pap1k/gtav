@@ -5,14 +5,17 @@ module.exports = {
         const v = await Vehicle.find()
         return v
     },
-    getByUid: async (veh) => {
+    getByUid: async (uid) => {
         
     },
-    create: async (veh, uid) => {
-        return new Vehicle({
-            name: "CARCAR",
-            owner: uid,
+    create: async (veh, owner, vehname) => {
+        const cfg = {
+            name: vehname,
+            spawned: true,
+            owner: owner,
             vehType: veh
-        })
+        }
+        new Vehicle(cfg)
+        return cfg
     }
 }

@@ -726,7 +726,7 @@ const vehicleHashes = {
 const Vehicles = Object.entries(vehicleHashes)
 
 const vehicles = require("../db_worker/vehicles")
-let loaded
+let loaded = []
 
 async function fill(){
     loaded = await vehicles.getAll()
@@ -745,8 +745,20 @@ module.exports = {
             if(veh.startsWith(name))
                 return vehicleHashes[veh]
     },
-    spawn: (veh, pos) => {
-        loaded.push(vehicles.create(veh, pos))
-        mp.vehicles.new(veh, pos)
+    List: loaded,
+    spawn: (veh, pos, owner) => {
+
+        vehicles.create(veh, owner, "CARCAR").then(v => {
+            let newveh = mp.vehicles.new(veh, pos)
+            let playername = "no"
+            mp.players.forEach(player => {
+                if(player.getVariable("uid") == v.owner)
+                    return playername = player.name
+            })
+            newveh.setVariable("owner", v.owner)
+            newveh.setVariable("owner_name", playername)
+            newveh.setVariable("name", v.name)
+            loaded.push(newveh)
+        })
     }
 }

@@ -1,7 +1,8 @@
 const lvls = require("../lvls")
 const fractions = require("../db_worker/fractions")
 const players = require("../db_worker/players")
-const {Vehicles, findByName, spawn} = require("../globals/Vehicles")
+const Veh = require("../globals/Vehicles")
+const { truncate } = require("fs")
 var exports = module.exports = {}
 exports.obj = [
     {
@@ -13,13 +14,13 @@ exports.obj = [
             if(vehName == "a")
                 vehName = "oppressor2"
             if(parseInt(vehName)){
-                if(Vehicles[vehName])
-                    vehName = Vehicles[vehName][1]
+                if(Veh.Vehicles[vehName])
+                    vehName = Veh.Vehicles[vehName][1]
                 else
                     return player.outputChatBox("Не найдено ТС с таким ID")
             }
             else{
-                let foundHash = findByName(vehName) 
+                let foundHash = Veh.findByName(vehName) 
                 if(foundHash)
                     vehName = foundHash
                 else
@@ -28,7 +29,61 @@ exports.obj = [
             let pos = player.position
             pos.x += 1
             pos.z += 1
-            spawn(vehName, pos)
+            Veh.spawn(vehName, pos, player.getVariable("uid"))
+        }
+    },
+    {
+        triggers: ["vinfoex"],
+        lvl: lvls.ALL_ADMINS,
+        execute: player => {
+            let closest
+            let lastdist
+            mp.vehicles.forEach(veh => {
+                let dist = player.dist(veh.position)
+                if(!closest)
+                    closest = veh
+                else
+                    if(dist < lastdist)
+                        closest = veh
+                lastdist = dist
+            })
+            if(closest && player.dist(closest.position) < 10){
+                let isOnline = false
+                mp.players.forEach(player => {
+                    if(player.name == closest.getVariable('owner_name'))
+                        return isOnline = truncate
+                })
+                player.outputChatBox(`V: ${closest.getVariable('name')}, O: ${closest.getVariable('owner_name')} ${(isOnline ? '' : '[OFF]')}`)
+            }
+            else
+                player.outputChatBox("Около вас не найдено ТС")
+        }
+    },
+    {
+        triggers: ["vinfo"],
+        lvl: lvls.ALL_ADMINS,
+        execute: player => {
+            let closest
+            let lastdist
+            Veh.List.forEach(veh => {
+                let dist = player.dist(veh.position)
+                if(!closest)
+                    closest = veh
+                else
+                    if(dist < lastdist)
+                        closest = veh
+                lastdist = dist
+            })
+            if(closest && player.dist(closest.position) < 30){
+                let playername = "off"
+                mp.players.forEach(player => {
+                    if(player.getVariable("uid") == closest.getVariable('owner'))
+                        return playername = player.name
+                })
+                player.outputChatBox(`V: ${closest.getVariable('name')}, O: ${playername}`)
+            }
+            else
+                player.outputChatBox("Около вас не найдено ТС")
         }
     },
     {
