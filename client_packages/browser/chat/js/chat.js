@@ -88,10 +88,13 @@ $(document).ready(function()
     hide();
     $(".ui_element").show();
     
+    for(let i = 0; i < 20; i++)
+        chatApi.push(" ")
+
     $("body").keydown(function(event)
     {
-        if (event.which == 84 || event.which == 117 && chat.input == null
-            && chat.active == true) {
+        mp.gui.chat.push(event.which + " SUCK PLS")
+        if ((event.which == 84 || event.which == 117) && (chat.input != null && chat.active == false)) {
             enableChatInput(true);
             event.preventDefault();
             show();
@@ -115,7 +118,7 @@ $(document).ready(function()
             enableChatInput(false);
             hide();
         }
-        else if (event.which == 27 || event.which == 117 && chat.input != null) {
+        else if ((event.which == 27 || event.which == 117) && chat.input != null) {
             enableChatInput(false);
             hide();
         }
