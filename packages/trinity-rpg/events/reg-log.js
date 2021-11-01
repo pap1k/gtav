@@ -66,11 +66,12 @@ async function authAndSpawn(player, dbplayer){
         const f = await fractions.getByIdx(dbplayer.fraction)
         if(f){
             player.position = new mp.Vector3(f.spawnpoints[0].x, f.spawnpoints[0].y, f.spawnpoints[0].z)
-        }
+        }   
         else
         //TODO: CHOOSE ONE OF SPAWNS
             player.position = new mp.Vector3(spawn.x, spawn.y, spawn.z)
     }
     else
         player.position = new mp.Vector3(spawn.x, spawn.y, spawn.z)
+    player.call("playRadio")
 }

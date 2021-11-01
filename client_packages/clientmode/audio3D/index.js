@@ -1,6 +1,6 @@
 const maxRange = 60.0;
 const localPlayer = mp.players.local;
-let musicPlayer = mp.browsers.new('package://player/musicPlayer/index.html');
+let musicPlayer = mp.browsers.new('package://clientmode/audio3D/musicPlayer/index.html');
 let id = 0;
 let activeSounds = {}, hostSounds = {},
     soundInterval;
