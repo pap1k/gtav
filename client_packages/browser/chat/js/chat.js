@@ -47,14 +47,14 @@ let chatAPI =
 		chat.size++;
 		if (chat.size >= 50)
 		{
-			chat.container.children(":first").remove();
+			chat.html.children(":first").remove();
         }
         let date = new Date();  
         let options = {   
             hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
         };  
         chat.container.append({"time": date.toLocaleTimeString("en-us", options), "message": text});
-        chat.container.scrollTop(9999);
+        chat.html.scrollTop(9999);
 	},
 	clear: () =>
 	{
@@ -62,7 +62,6 @@ let chatAPI =
 	},
     update: () =>
 	{
-        chat.html = $("#chat ul#chat_messages");
         let text = ''
         for (let i = 0; i < chat.container.length; i += 1) {
             let item = chat.container[i]
@@ -107,6 +106,7 @@ function show() {
 $(document).ready(function()
 {
     // chat.container = $("#chat ul#chat_messages");
+    chat.html = $("#chat ul#chat_messages");
     chatAPI.update()
     hide();
     $(".ui_element").show();
