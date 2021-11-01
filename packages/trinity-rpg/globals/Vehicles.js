@@ -747,7 +747,6 @@ module.exports = {
     },
     List: loaded,
     spawn: (veh, pos, owner) => {
-
         vehicles.create(veh, owner, "CARCAR").then(v => {
             let newveh = mp.vehicles.new(veh, pos)
             let playername = "no"
@@ -758,7 +757,7 @@ module.exports = {
             newveh.setVariable("owner", v.owner)
             newveh.setVariable("owner_name", playername)
             newveh.setVariable("name", v.name)
-            loaded.push(newveh)
+            loaded.push(newveh)//not working
         })
     }
 }

@@ -33,7 +33,7 @@ exports.obj = [
         }
     },
     {
-        triggers: ["vinfoex"],
+        triggers: ["vinfo"],
         lvl: lvls.ALL_ADMINS,
         execute: player => {
             let closest
@@ -60,7 +60,7 @@ exports.obj = [
         }
     },
     {
-        triggers: ["vinfo"],
+        triggers: ["vinfonew"],
         lvl: lvls.ALL_ADMINS,
         execute: player => {
             let closest
