@@ -33,7 +33,7 @@ exports.obj = [
         }
     },
     {
-        triggers: ["vinfo"],
+        triggers: ["vinfo", "vehinfo"],
         lvl: lvls.ALL_ADMINS,
         execute: player => {
             let closest
@@ -49,11 +49,21 @@ exports.obj = [
             })
             if(closest && player.dist(closest.position) < 10){
                 let isOnline = false
+                let last_driver = closest.getVariable("last_driver") ? "off" : "no"
                 mp.players.forEach(player => {
                     if(player.name == closest.getVariable('owner_name'))
-                        return isOnline = truncate
+                        isOnline = true
+                    if(player.getVariable("uid") == closest.getVariable("last_driver"))
+                        last_driver = player.name
                 })
-                player.outputChatBox(`V: ${closest.getVariable('name')}, O: ${closest.getVariable('owner_name')} ${(isOnline ? '' : '[OFF]')}`)
+                const d = new Date(closest.getVariable("spawntime"))
+                let timespawn = `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}` 
+                if(last_driver == "off")
+                    players.getByUid(closest.getVariable("last_driver")).then(player => {
+                        player.outputChatBox(`V: ${closest.getVariable('name')}, O: ${closest.getVariable('owner_name')} ${(isOnline ? '' : '[OFF]')}, LD: ${player.name} [OFF], S: ${timespawn}`)
+                    })
+                else
+                    player.outputChatBox(`V: ${closest.getVariable('name')}, O: ${closest.getVariable('owner_name')} ${(isOnline ? '' : '[OFF]')}, LD: ${last_driver}, S: ${timespawn}`)
             }
             else
                 player.outputChatBox("Около вас не найдено ТС")
@@ -220,7 +230,7 @@ exports.obj = [
             players.updateDefault(player, {player_level: lvls.PLAYER})
             target.setVariable("level", lvls.PLAYER)
             player.outputChatBox("Вы сняли "+target.name+" с должности тестера")
-            target.outputChatBox("Создатель проекта "+player.name+" сналя вас с должности тестера")
+            target.outputChatBox("Создатель проекта "+player.name+" снял вас с должности тестера")
         }
     },
     {
@@ -236,7 +246,7 @@ exports.obj = [
         lvl: lvls.ALL_ADMINS,
         execute: player => {
             const v = player.getVariable("agm")
-            if(agm){
+            if(v){
                 player.outputChatBox("Вы включили AGM")
                 player.setVariable("agm", true)
             }
