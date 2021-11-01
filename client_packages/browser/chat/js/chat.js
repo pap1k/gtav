@@ -9,7 +9,8 @@ let chat =
     timer: null,
     previous: [],
     previous_count: 0,
-	hide_chat: 10000
+	hide_chat: 10000,
+    html: null
 };
 
 function enableChatInput(enable)
@@ -48,20 +49,31 @@ let chatAPI =
 		{
 			chat.container.children(":first").remove();
         }
-        if (chat.timestamp){
-            let date = new Date();  
-            let options = {   
-                hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
-            };  
-            chat.container.append("<li>[" + date.toLocaleTimeString("en-us", options) + "] " + text + "</li>");
-        } else {
-            chat.container.append("<li>" + text + "</li>");
-        }
+        let date = new Date();  
+        let options = {   
+            hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+        };  
+        chat.container.append({"time": date.toLocaleTimeString("en-us", options), "message": text});
         chat.container.scrollTop(9999);
 	},
 	clear: () =>
 	{
-		chat.container.html("");
+		chat.html.html("");
+	},
+    update: () =>
+	{
+        chat.html = $("#chat ul#chat_messages");
+        let text = ''
+        for (let i = 0; i < chat.container.length; i += 1) {
+            let item = chat.container[i]
+            if (chat.timestamp){
+                text = text + "<li>[" + item.time + "] " + item.text + "</li>\n"
+            } else {
+                text = text + "<li>" + item.text + "</li>\n"
+            }
+        }
+        chat.html.html("")
+        chat.html.html(text)
 	},
 	activate: (toggle) =>
 	{
@@ -94,15 +106,16 @@ function show() {
 }
 $(document).ready(function()
 {
-    chat.container = $("#chat ul#chat_messages");
+    // chat.container = $("#chat ul#chat_messages");
+    chatAPI.update()
     hide();
     $(".ui_element").show();
     pushWelcomeMessage();
     chat.previous.push(' ');
     $("body").keydown(function(event)
     {   
-        if (chat.input == null && chat.active == true) {
-            if (event.which == 84 || event.which == 117 && chat.input == null && chat.active == true) {
+        if (chat.active == false) {
+            if (event.which == 84 || event.which == 117) {
                 enableChatInput(true);
                 event.preventDefault();
                 show();
