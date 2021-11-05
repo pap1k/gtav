@@ -1,12 +1,20 @@
 const parkings = require("../db_worker/parkings")
 const utils = require("../utils")
 
-let loaded = {}
+let loaded = []
 
 async function load(){
     loaded = await parkings.getAll()
     utils.log("Parkings loaded", "done")
-    console.log(loaded)
 }
 load()
-module.exports = loaded
+module.exports = {
+    getLoaded: () => loaded,
+    bindCar: (parkid, carid) => {
+        loaded.forEach(c => {
+            if (c._id == parkid)
+                return c.carid = carid
+        })
+        return parkings.update({_id: parkid}, {carid})
+    }
+}

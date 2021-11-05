@@ -13,5 +13,13 @@ module.exports = {
     },
     getAll: () => {
         return Parking.find()
+    },
+    update: (find, fields) => {
+        return Parking.findOne({_id: find}, (e, doc) => {
+            for(field in fields){
+                doc[field] = fields[field]
+            }
+            doc.save()
+        })
     }
 }

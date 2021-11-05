@@ -3,7 +3,7 @@ const fractions = require("../db_worker/fractions")
 const players = require("../db_worker/players")
 const Veh = require("../globals/Vehicles")
 const colors = require("../chat-colors.json")
-const parkings = require("../db_worker/parkings")
+
 var exports = module.exports = {}
 exports.obj = [
     {triggers: ["veh", "car"],
@@ -29,7 +29,7 @@ exports.obj = [
             let pos = player.position
             pos.x += 1
             pos.z += 1
-            Veh.spawn(vehName, pos, player.getVariable("uid"))
+            Veh.create(vehName, pos, player.getVariable("uid"))
         }
     },
     {triggers: ["vinfo", "vehinfo"],
@@ -270,12 +270,47 @@ exports.obj = [
             player.call("anim.dance")
         }
     },
-    {
-        triggers: "createparking",
+    {triggers: "createcar",
         lvl: lvls.TESTER,
-        execute: async player => {
-            const r = await parkings.create(player.position)
-            player.outputChatBox("Паркинг создан. ID: "+r._id)
+        execute: player => {
+            return player.outputChatBox(color.GREY+"Команда недоступна")
+            if(vehName == "a")
+                vehName = "oppressor2"
+            if(parseInt(vehName)){
+                if(Veh.Vehicles[vehName])
+                    vehName = Veh.Vehicles[vehName][1]
+                else
+                    return player.outputChatBox("Не найдено ТС с таким ID")
+            }
+            else{
+                let foundHash = Veh.findByName(vehName) 
+                if(foundHash)
+                    vehName = foundHash
+                else
+                    return player.outputChatBox("Не найдено ТС с таким названием")
+            } 
+            let pos = player.position
+            pos.x += 1
+            pos.z += 1
+            Veh.create(vehName, pos, player.getVariable("uid"))
+        }
+    },
+    {triggers: "spawncar",
+        lvl: lvls.TESTER,
+        args: 1,
+        hint: "/spawncar [id загруженной в игру но незаспавненной машины]",
+        execute: (player, _, id) => {
+            Veh.getLoaded().forEach(car => {
+                if(car._id == id)
+                    Veh.spawn(car._id, player.position)
+            })
+        }
+    },
+    {
+        triggers: "showloaded",
+        lvl: lvls.TESTER,
+        execute: () => {
+            console.log(Veh.getLoaded())
         }
     }
 ]

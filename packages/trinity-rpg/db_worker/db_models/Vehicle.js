@@ -18,7 +18,7 @@ const schema = new Schema({
         required: true,
     },
     spawn: {
-        type: Array
+        type: Object
     }
 })
 
