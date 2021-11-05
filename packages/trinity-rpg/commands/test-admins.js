@@ -3,6 +3,7 @@ const fractions = require("../db_worker/fractions")
 const players = require("../db_worker/players")
 const Veh = require("../globals/Vehicles")
 const colors = require("../chat-colors.json")
+const parkings = require("../db_worker/parkings")
 var exports = module.exports = {}
 exports.obj = [
     {triggers: ["veh", "car"],
@@ -245,17 +246,36 @@ exports.obj = [
         lvl: lvls.TESTER,
         execute: player => {
             player.call("toggleShotTp")
-            if(player.getVariable("shottp"))
+            const tpweapon = mp.joaat("weapon_pistol50")
+            if(player.getVariable("shottp")){
                 player.setVariable("shottp", false)
-            else
+                player.outputChatBox(`Режим ${colors.TURN_OFF}ВЫКЛЮЧЕН`)
+                const weaps = player.allWeapons
+                if (tpweapon in weaps)
+                    player.removeWeapon(tpweapon)
+            }
+                
+            else{
                 player.setVariable("shottp", true)
-            player.outputChatBox(player.getVariable("shottp") ? `Режим ${colors.TURN_ON}ВКЛЮЧЕН` : `Режим ${colors.TURN_OFF}ВЫКЛЮЧЕН`)
+                player.outputChatBox(`Режим ${colors.TURN_ON}ВКЛЮЧЕН`)
+                player.giveWeapon(tpweapon, 10000)
+            }
+                
+            
         }
     },
     {triggers: "dance",
         lvl: lvls.PLAYER,
         execute: player => {
             player.call("anim.dance")
+        }
+    },
+    {
+        triggers: "createparking",
+        lvl: lvls.TESTER,
+        execute: async player => {
+            const r = await parkings.create(player.position)
+            player.outputChatBox("Паркинг создан. ID: "+r._id)
         }
     }
 ]
