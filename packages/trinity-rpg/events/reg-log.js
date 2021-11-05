@@ -73,5 +73,5 @@ async function authAndSpawn(player, dbplayer){
     }
     else
         player.position = new mp.Vector3(spawn.x, spawn.y, spawn.z)
-    player.call("playRadio")
+    //player.call("playRadio")
 }

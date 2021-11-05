@@ -2,6 +2,7 @@ const lvls = require("../lvls")
 const fractions = require("../db_worker/fractions")
 const players = require("../db_worker/players")
 const Veh = require("../globals/Vehicles")
+const colors = require("../chat-colors.json")
 var exports = module.exports = {}
 exports.obj = [
     {triggers: ["veh", "car"],
@@ -56,7 +57,7 @@ exports.obj = [
                 const d = new Date(closest.getVariable("spawntime"))
                 let timespawn = `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}` 
                 if(last_driver == "off")
-                    players.getByUid(closest.getVariable("last_driver")).then(player => {
+                    players.getByUid(closest.getVariable("last_driver")).then(p => {
                         player.outputChatBox(`V: ${closest.getVariable('name')}, O: ${closest.getVariable('owner_name')} ${(isOnline ? '' : '[OFF]')}, LD: ${player.name} [OFF], S: ${timespawn}`)
                     })
                 else
@@ -238,6 +239,23 @@ exports.obj = [
                 player.outputChatBox("Вы выключили AGM")
                 player.setVariable("agm", false)
             }
+        }
+    },
+    {triggers: "shottp",
+        lvl: lvls.TESTER,
+        execute: player => {
+            player.call("toggleShotTp")
+            if(player.getVariable("shottp"))
+                player.setVariable("shottp", false)
+            else
+                player.setVariable("shottp", true)
+            player.outputChatBox(player.getVariable("shottp") ? `Режим ${colors.TURN_ON}ВКЛЮЧЕН` : `Режим ${colors.TURN_OFF}ВЫКЛЮЧЕН`)
+        }
+    },
+    {triggers: "dance",
+        lvl: lvls.PLAYER,
+        execute: player => {
+            player.call("anim.dance")
         }
     }
 ]
