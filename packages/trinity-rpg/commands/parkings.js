@@ -2,7 +2,7 @@ const parkings_db = require("../db_worker/parkings")
 const parks = require("../globals/parkings")
 const colors = require("../chat-colors.json")
 const lvls = require("../lvls")
-
+const dtext = require("../functions/3dtext")
 
 module.exports = { obj:
 [
@@ -13,8 +13,7 @@ module.exports = { obj:
             player.outputChatBox("Паркинг создан. ID: "+r._id)
         }
     },
-    {
-        triggers: "parkinfo",
+    {triggers: ["parkinfo", "pinfo"],
         lvl: lvls.TESTER,
         execute: player => {
             let closest
@@ -36,7 +35,27 @@ module.exports = { obj:
         }
     },
     {
-        triggers: "bindvehtopark",
+        triggers: ["parkinfo3d", "pinfo3d"],
+        lvl: lvls.TESTER,
+        execute: player => {
+            let v = player.getVariable("parks3d") ? true : false
+            textids = []
+            parks.getLoaded().forEach(park => {
+                if(!v){
+                    let textid = dtext.create3DText(`Parking [${closest._id}], attached car [${closest.carid}]`, 10, park.coords)
+                    textids.push(textid)
+                    dtext.show3DText(textid, player.id)
+                }
+                else{
+                    player.getVariable("parks3d").forEach(id => {
+                        dtext.delete3DText(id, player.id)
+                    })
+                }
+            })
+            player.setVariable("parks3d", null)
+        }
+    },
+    {triggers: "bindvehtopark",
         lvl: lvls.TESTER,
         execute: player => {
             if(player.vehicle){

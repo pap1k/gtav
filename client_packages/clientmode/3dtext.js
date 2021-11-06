@@ -15,6 +15,7 @@ function findElemId(id){
 //     text: "Top text in the world" - displayable text
 // }
 mp.events.add('show3dtext', elem =>{
+    elem = JSON.parse(elem)
     if(elem.id && elem.pos && elem.drawdist && elem.text){
         if(findElemId(elem.id) == -1)
             todraw.push(elem)
@@ -42,8 +43,6 @@ mp.events.add('render', () => {
             if(scale < 0.6) scale = 0.6
 
             elem.pos.y -= scale * (0.0008 * (screenRes.y / 1080))
-
-
             mp.game.graphics.drawText(
                 elem.text,
                 [x, y],
