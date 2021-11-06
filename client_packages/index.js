@@ -9,6 +9,7 @@ require('./clientmode/audio3D')
 require('./clientmode/customRadio')
 require('./clientmode/shot-tp')
 require('./clientmode/anims')
+require('./clientmode/3dtext')
 
 //Disable ambient sounds
 mp.game.audio.startAudioScene("CHARACTER_CHANGE_IN_SKY_SCENE")

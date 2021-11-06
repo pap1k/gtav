@@ -11,7 +11,7 @@ exports.obj = [
         args: 1,
         hint: "/veh [id]",
         execute: (player, _, vehName) => {
-            return player.outputChatBox(color.GREY+"Из-за измененной логики работы менеджера машин команду вынужден оффнуть чтобы не было флуда в БД")
+            return player.outputChatBox(colors.GREY+"Из-за измененной логики работы менеджера машин команду вынужден оффнуть чтобы не было флуда в БД")
             if(vehName == "a")
                 vehName = "oppressor2"
             if(parseInt(vehName)){
