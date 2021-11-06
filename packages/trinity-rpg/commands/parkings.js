@@ -40,19 +40,16 @@ module.exports = { obj:
         execute: player => {
             let v = player.getVariable("parks3d") ? true : false
             textids = []
-            parks.getLoaded().forEach(park => {
-                if(!v){
-                    let textid = dtext.create3DText(`Parking [${closest._id}], attached car [${closest.carid}]`, 10, park.coords)
-                    textids.push(textid)
-                    dtext.show3DText(textid, player.id)
-                }
-                else{
-                    player.getVariable("parks3d").forEach(id => {
-                        dtext.delete3DText(id, player.id)
-                    })
-                }
-            })
-            player.setVariable("parks3d", null)
+            if(v){
+                player.setVariable("parks3d", false)
+                parks.dtexts().forEach(dtextid => dtext.delete3DText(dtextid, player.id))
+                player.outputChatBox("Отображение парковок выключено")
+            }
+            else{
+                player.setVariable("parks3d", true)
+                parks.dtexts().forEach(dtextid => dtext.show3DText(dtextid, player.id))
+                player.outputChatBox("Отображение парковок включено")
+            }
         }
     },
     {triggers: "bindvehtopark",
