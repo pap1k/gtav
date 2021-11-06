@@ -16,7 +16,7 @@ function findElemId(id){
 // }
 mp.events.add('show3dtext', elem => {
     elem = JSON.parse(elem)
-    if(elem.id != undefined && elem.pos && elem.drawdist && elem.text){
+    if(elem.id !== undefined && elem.pos && elem.drawdist && elem.text){
         if(findElemId(elem.id) == -1)
             todraw.push(elem)
         else
@@ -27,7 +27,7 @@ mp.events.add('show3dtext', elem => {
 mp.events.add('delete3dtext', elem => {
     mp.gui.chat.push(elem)
     elem = JSON.parse(elem)
-    if(elem.id != undefined){
+    if(elem.id !== undefined){
         const idx = findElemId(elem.id)
         mp.gui.chat.push("deleting now 3d with id [" + elem.id +"], id in array ["+idx+"]") 
         if(idx != -1)

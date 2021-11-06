@@ -247,7 +247,7 @@ exports.obj = [
         lvl: lvls.TESTER,
         execute: player => {
             player.call("toggleShotTp")
-            const tpweapon = mp.joaat("weapon_pistol50")
+            const tpweapon = mp.joaat("weapon_heavypistol")
             if(player.getVariable("shottp")){
                 player.setVariable("shottp", false)
                 player.outputChatBox(`Режим ${colors.TURN_OFF}ВЫКЛЮЧЕН`)
@@ -307,9 +307,8 @@ exports.obj = [
             })
         }
     },
-    {
-        triggers: "showloaded",
-        lvl: lvls.TESTER,
+    {triggers: "showloaded",
+        lvl: lvls.UNIQUE_LEVEL,
         execute: () => {
             console.log(Veh.getLoaded())
         }
