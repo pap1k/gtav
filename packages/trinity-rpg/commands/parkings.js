@@ -34,8 +34,7 @@ module.exports = { obj:
                 player.outputChatBox(colors.GREY+"Поблизости не найдено парковок")
         }
     },
-    {
-        triggers: ["parkinfo3d", "pinfo3d"],
+    {triggers: ["parkinfo3d", "pinfo3d"],
         lvl: lvls.TESTER,
         execute: player => {
             let v = player.getVariable("parks3d") ? true : false
