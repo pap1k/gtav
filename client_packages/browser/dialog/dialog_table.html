@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet"> 
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        .section{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .dialog{
+            border-radius: 5%;
+            position: relative;
+            border: 2px solid #2980b9;
+            background-color: #bdc3c7;
+            width: 50%;
+            height: 70%;
+        }
+        .btn-close {
+            display: inline-block;
+            position: absolute;
+            border-radius: 50%;
+            margin-top: 10px;
+            margin-right: 10px;
+            width: 30px;
+            height: 30px;
+            right: 0;
+            top: 0;
+        }
+        .btn-close:hover {
+           cursor: pointer;
+        }
+        .btn-close span,
+        .btn-close span::after{
+            content: "";
+            position: absolute;
+            width: 20px;
+            top: 50%;
+            left: 50%;
+            margin-top: -1px;
+            margin-left: -10px;
+            display: block;
+            height: 2px;
+            background-color: red;
+            transform: rotateZ(45deg);
+        }
+        .btn-close span::after{
+            transform: rotateZ(-90deg);
+        }
+        .title{
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+            color: #3498db;
+            font-size: 32px;
+            font-weight: 600;
+            padding-top: 20px;
+        }
+        .table{
+            height: 90%;
+            width: 95%;
+            margin: 0 auto;
+        }
+        table {
+            color: #2c3e50;
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 98%;
+            overflow: scroll;
+        }
+
+        ::-webkit-scrollbar {
+            width: 15px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-color: #3498db;
+        }
+
+        ::-webkit-scrollbar-track{
+            background-color: #dddddd;
+            border-radius: 10px;
+        }
+        table th {
+            position: -webkit-sticky;
+            position: sticky;
+            background-color: #bdc3c7;
+            top: 0;
+            z-index: 10;
+        }
+
+        td, th {
+
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="section">
+        <div class="dialog">
+            <div class="btn-close">
+                <span></span>
+            </div>
+            <div class="title">
+                <!-- TEXT TO INSERT -->
+            </div>
+            <div class="table">
+                <table>
+                    <!-- DATA TO INSERT -->
+                </table>
+            </div>
+            
+        </div>
+    </div>
+    <script>
+        const table = document.getElementsByTagName("table")[0]
+        const title = document.getElementsByClassName("title")[0]
+        const btn = document.getElementsByClassName("btn-close")[0]
+        
+        document.addEventListener("keypress", e => {
+            if(e.key == "Escape")
+                mp.trigger("closeDialog")
+        })
+
+        btn.addEventListener('click', () => {
+            mp.trigger("closeDialog")
+        })
+
+        function fillTitle(text){
+            title.innerHTML = text
+        }
+
+        function fillData(data){
+            /*
+            * {
+                headers:[
+                    "TEXT"
+                ],
+                cols:[
+                    [txt11, txt12],
+                    [txt21, txt22]
+                ]
+            }
+            *
+            */
+            let text = "<tbody><tr>"
+            data = JSON.parse(data)
+            mp.gui.chat.push(data)
+            data.headers.forEach(e => {
+                text += "<th>"+e+"</th>"
+            })
+            text += "</tr></tbody>"
+            //table_headers.innerHTML = text
+           
+            data.cols.forEach((e, i) => {
+                text += "<tr>"
+                e.forEach(d => {
+                    if(d.c)
+                        text += "<td><span style='color: #"+d.c+";'>"+d.v+"</td>"
+                    else
+                        text += "<td>"+d+"</td>"
+                })
+                text += "</tr>"
+            })
+            text += "</tbody>"
+            table.innerHTML = text
+        }
+    </script>
+</body>
+</html>

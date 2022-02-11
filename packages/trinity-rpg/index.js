@@ -1,8 +1,4 @@
-//init Commands file
-require('./commands/main')
-require("./events/main")
 const db = require("./server-side-conf.json").db
-//const db = require('./db')
 const mongoose = require("mongoose")
 const utils = require("./utils")
 async function start(){
@@ -15,10 +11,15 @@ async function start(){
                 useUnifiedTopology: true
             }
         , e => console.log(e))
-        utils.log("Подключение к БД успешно", "done")
+        utils.log("Database connection successful!", "done")
     } catch(e){
-        throw "Пизда с БД"
+        throw "Database connection failed!"
     }
     
 }
-start()
+start().then(v => {
+    require('./commands/main')
+    require('./structures/fraction/commands/main')
+    require("./events/main")
+    require("./globals/loader")
+})

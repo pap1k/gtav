@@ -22,10 +22,21 @@ exports.findPlayerByIdOrNickname = function (playerName){
 exports.sendToAdmins = function(text){
     mp.players.forEach(_player => {
         if(_player.getVariable('level') >= lvls.ALL_ADMINS) {
-            _player.outputChatBox(text)
+            _player.outputChatBox("!{#FF6347} A: "+text)
         }
     })
 }
+
+exports.findPlayerByUid = function (uid){
+    let found = null
+    mp.players.forEach(_player => {
+        if(_player.getVariable('uid') == uid) {
+            found = _player
+        }
+    })
+    return found
+}
+
 exports.log = function(text, type){
     if(!type) type = "info"
     let color
