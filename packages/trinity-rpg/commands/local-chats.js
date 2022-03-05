@@ -21,7 +21,7 @@ exports.obj = [
         lvl: lvls.PLAYER,
         execute: (player, fullcmd)=>{
             if(!isMuted(player))
-                mp.players.broadcastInRange(player.position, 60, `${COLOR.S}${player.name} крикнул: ${fullcmd}`)
+                mp.players.broadcastInRange(player.position, 30, `${COLOR.S}${player.name} крикнул: ${fullcmd}`)
         }
     }
 ]
@@ -30,9 +30,9 @@ function localChat(player, fullcmd){
     if(!isMuted(player)){
         log("CHAT", player.name, "c", Date.now(), fullcmd)
         if(fullcmd[0] == "!")
-            mp.players.broadcastInRange(player.position, 5, `${COLOR.CS}${player.name} тихо сказал: ${fullcmd.substring(1, fullcmd.length)}`)
+            mp.players.broadcastInRange(player.position, 2, `${COLOR.CS}${player.name} тихо сказал: ${fullcmd.substring(1, fullcmd.length)}`)
         else
-            mp.players.broadcastInRange(player.position, 20, `${COLOR.C}${player.name} сказал: ${fullcmd}`)
+            mp.players.broadcastInRange(player.position, 5, `${COLOR.C}${player.name} сказал: ${fullcmd}`)
     }
        
 }

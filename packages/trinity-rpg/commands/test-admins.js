@@ -1,25 +1,27 @@
 const lvls = require("../lvls")
 const fractions = require("../db_worker/fractions")
 const players = require("../db_worker/players")
-const {Vehicles, findByName, spawn} = require("../globals/Vehicles")
+const Veh = require("../globals/Vehicles")
+const colors = require("../chat-colors.json")
+
 var exports = module.exports = {}
 exports.obj = [
-    {
-        triggers: ["veh", "car"],
+    {triggers: ["veh", "car"],
         lvl: lvls.TESTER,
         args: 1,
         hint: "/veh [id]",
         execute: (player, _, vehName) => {
+            return player.outputChatBox(colors.GREY+"Из-за измененной логики работы менеджера машин команду вынужден оффнуть чтобы не было флуда в БД")
             if(vehName == "a")
                 vehName = "oppressor2"
             if(parseInt(vehName)){
-                if(Vehicles[vehName])
-                    vehName = Vehicles[vehName][1]
+                if(Veh.Vehicles[vehName])
+                    vehName = Veh.Vehicles[vehName][1]
                 else
                     return player.outputChatBox("Не найдено ТС с таким ID")
             }
             else{
-                let foundHash = findByName(vehName) 
+                let foundHash = Veh.findByName(vehName) 
                 if(foundHash)
                     vehName = foundHash
                 else
@@ -28,11 +30,72 @@ exports.obj = [
             let pos = player.position
             pos.x += 1
             pos.z += 1
-            spawn(vehName, pos)
+            Veh.create(vehName, pos, player.getVariable("uid"))
         }
     },
-    {
-        triggers: "fspawn",
+    {triggers: ["vinfo", "vehinfo"],
+        lvl: lvls.ALL_ADMINS,
+        execute: player => {
+            let closest
+            let lastdist
+            mp.vehicles.forEach(veh => {
+                let dist = player.dist(veh.position)
+                if(!closest)
+                    closest = veh
+                else
+                    if(dist < lastdist)
+                        closest = veh
+                lastdist = dist
+            })
+            if(closest && player.dist(closest.position) < 10){
+                let isOnline = false
+                let last_driver = closest.getVariable("last_driver") ? "off" : "no"
+                mp.players.forEach(player => {
+                    if(player.name == closest.getVariable('owner_name'))
+                        isOnline = true
+                    if(player.getVariable("uid") == closest.getVariable("last_driver"))
+                        last_driver = player.name
+                })
+                const d = new Date(closest.getVariable("spawntime"))
+                let timespawn = `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}` 
+                if(last_driver == "off")
+                    players.getByUid(closest.getVariable("last_driver")).then(p => {
+                        player.outputChatBox(`V: ${closest.getVariable('name')}, O: ${closest.getVariable('owner_name')} ${(isOnline ? '' : '[OFF]')}, LD: ${player.name} [OFF], S: ${timespawn}`)
+                    })
+                else
+                    player.outputChatBox(`V: ${closest.getVariable('name')}, O: ${closest.getVariable('owner_name')} ${(isOnline ? '' : '[OFF]')}, LD: ${last_driver}, S: ${timespawn}`)
+            }
+            else
+                player.outputChatBox("Около вас не найдено ТС")
+        }
+    },
+    {triggers: ["vinfonew"],
+        lvl: lvls.ALL_ADMINS,
+        execute: player => {
+            let closest
+            let lastdist
+            Veh.List.forEach(veh => {
+                let dist = player.dist(veh.position)
+                if(!closest)
+                    closest = veh
+                else
+                    if(dist < lastdist)
+                        closest = veh
+                lastdist = dist
+            })
+            if(closest && player.dist(closest.position) < 30){
+                let playername = "off"
+                mp.players.forEach(player => {
+                    if(player.getVariable("uid") == closest.getVariable('owner'))
+                        return playername = player.name
+                })
+                player.outputChatBox(`V: ${closest.getVariable('name')}, O: ${playername}`)
+            }
+            else
+                player.outputChatBox("Около вас не найдено ТС")
+        }
+    },
+    {triggers: "fspawn",
         lvl: lvls.ALL_ADMINS,
         args: 1,
         hint: "/fspawn [IDX фракции] [номер точки]",
@@ -56,8 +119,14 @@ exports.obj = [
                 player.outputChatBox("Не удалось найти фракцию с таким IDX")
         }
     },
-    {
-        triggers: "createfraction",
+    {triggers: "getf",
+        lvl: lvls.ALL_ADMINS,
+        target: true,
+        execute: (p, _, t) => {
+            p.outputChatBox(t.getVariable("fraction"))
+        }
+    },
+    {triggers: "createfraction",
         lvl: lvls.UNIQUE_LEVEL,
         args: 2,
         hint: "/createfraction [idx] [название]",
@@ -69,8 +138,7 @@ exports.obj = [
             player.outputChatBox(result)
         }
     },
-    {
-        triggers: "deletefraction",
+    {triggers: "deletefraction",
         lvl: lvls.UNIQUE_LEVEL,
         args: 1,
         hint: "/deletefraction [idx]",
@@ -82,8 +150,7 @@ exports.obj = [
             player.outputChatBox(result)
         }
     },
-    {
-        triggers: "addspawnpoint",
+    {triggers: "addspawnpoint",
         lvl: lvls.TESTER,
         args: 1,
         hint: "/addspawnpoint [IDX фракции]",
@@ -104,8 +171,7 @@ exports.obj = [
             player.outputChatBox("Для фракции "+doc.name+" добавлена точка спавна")
         }  
     },
-    {
-        triggers: ["weap", "weapon"],
+    {triggers: ["weap", "weapon"],
         lvl: lvls.TESTER,
         args: 1,
         execute: (player, _, weap) => {
@@ -113,8 +179,7 @@ exports.obj = [
             player.giveWeapon(weaponHash, 10000)
         }
     },
-    {
-        triggers: ["gweap", "ggun"],
+    {triggers: ["gweap", "ggun"],
         lvl: lvls.TESTER,
         target: true,
         hint: "/gweap [id] [оружие]",
@@ -125,8 +190,7 @@ exports.obj = [
             targ.outputChatBox("Тестер "+player.name+" выдал вам оружие")
         }
     },
-    {
-        triggers: "tppos",
+    {triggers: "tppos",
         lvl: lvls.TESTER,
         execute: (player, _, x, y, z) => {
             if (!isNaN(parseFloat(x)) && !isNaN(parseFloat(y)) && !isNaN(parseFloat(z))){
@@ -136,8 +200,7 @@ exports.obj = [
                 player.outputChatBox("Подсказка: /tppos [x] [y] [z]")
         }
     },
-    {
-        triggers: "maketester",
+    {triggers: "maketester",
         lvl: lvls.UNIQUE_LEVEL,
         target: true,
         hint: "/maketester [id или часть ника]",
@@ -148,8 +211,7 @@ exports.obj = [
             target.outputChatBox("Создатель проекта "+player.name+" назначил вас тестером")
         }
     },
-    {
-        triggers: "destroy",
+    {triggers: "destroy",
         lvl: lvls.UNIQUE_LEVEL,
         target: true,
         hint: "/destroy [id или часть ника]",
@@ -157,23 +219,21 @@ exports.obj = [
             players.updateDefault(player, {player_level: lvls.PLAYER})
             target.setVariable("level", lvls.PLAYER)
             player.outputChatBox("Вы сняли "+target.name+" с должности тестера")
-            target.outputChatBox("Создатель проекта "+player.name+" сналя вас с должности тестера")
+            target.outputChatBox("Создатель проекта "+player.name+" снял вас с должности тестера")
         }
     },
-    {
-        triggers: "fixmydbprofile",
+    {triggers: "fixmydbprofile",
         lvl: lvls.UNIQUE_LEVEL,
         execute: player => {
             players.updateDefault(player, {player_level: lvls.UNIQUE_LEVEL})
             player.outputChatBox("Уровень доступа восстановлен")
         }
     },
-    {
-        triggers: "agm",
+    {triggers: "agm",
         lvl: lvls.ALL_ADMINS,
         execute: player => {
             const v = player.getVariable("agm")
-            if(agm){
+            if(v){
                 player.outputChatBox("Вы включили AGM")
                 player.setVariable("agm", true)
             }
@@ -182,5 +242,88 @@ exports.obj = [
                 player.setVariable("agm", false)
             }
         }
+    },
+    {triggers: "shottp",
+        lvl: lvls.TESTER,
+        execute: player => {
+            player.call("toggleShotTp")
+            const tpweapon = mp.joaat("weapon_heavypistol")
+            if(player.getVariable("shottp")){
+                player.setVariable("shottp", false)
+                player.outputChatBox(`Режим ${colors.TURN_OFF}ВЫКЛЮЧЕН`)
+                const weaps = player.allWeapons
+                if (tpweapon in weaps)
+                    player.removeWeapon(tpweapon)
+            }
+                
+            else{
+                player.setVariable("shottp", true)
+                player.outputChatBox(`Режим ${colors.TURN_ON}ВКЛЮЧЕН`)
+                player.giveWeapon(tpweapon, 10000)
+            }
+                
+            
+        }
+    },
+    {triggers: "dance",
+        lvl: lvls.PLAYER,
+        execute: player => {
+            player.call("anim.dance")
+        }
+    },
+    {triggers: "createcar",
+        lvl: lvls.TESTER,
+        execute: player => {
+            return player.outputChatBox(color.GREY+"Команда недоступна")
+            if(vehName == "a")
+                vehName = "oppressor2"
+            if(parseInt(vehName)){
+                if(Veh.Vehicles[vehName])
+                    vehName = Veh.Vehicles[vehName][1]
+                else
+                    return player.outputChatBox("Не найдено ТС с таким ID")
+            }
+            else{
+                let foundHash = Veh.findByName(vehName) 
+                if(foundHash)
+                    vehName = foundHash
+                else
+                    return player.outputChatBox("Не найдено ТС с таким названием")
+            } 
+            let pos = player.position
+            pos.x += 1
+            pos.z += 1
+            Veh.create(vehName, pos, player.getVariable("uid"))
+        }
+    },
+    {triggers: "spawncar",
+        lvl: lvls.TESTER,
+        args: 1,
+        hint: "/spawncar [id загруженной в игру но незаспавненной машины]",
+        execute: (player, _, id) => {
+            Veh.getLoaded().forEach(car => {
+                if(car._id == id)
+                    Veh.spawn(car._id, player.position)
+            })
+        }
+    },
+    {triggers: "showloaded",
+        lvl: lvls.UNIQUE_LEVEL,
+        execute: () => {
+            console.log(Veh.getLoaded())
+        }
+    },
+    {triggers: "money",
+        lvl: lvls.ADMIN_LEVEL_4,
+        hint: "/money [ID или часть ника] [сумма]",
+        target: true,
+        execute: function(player, _, target, sum)
+        {
+            if(isNaN(parseInt(sum))) return player.outputChatBox(colors.GREY+"Сумма должна быть числом")
+            target.call("givemoney",[sum])
+            target.outputChatBox(colors.A+`Администратор ${player.name} выдал вам сумму ${sum}`)
+            player.outputChatBox(colors.A+`Вы выдали игроку ${target.name} сумму в размере ${sum} `)
+        }
+           
     }
 ]

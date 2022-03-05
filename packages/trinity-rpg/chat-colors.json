@@ -11,5 +11,7 @@
     "D": "!{#B22222}",
     "ME": "!{#C2A2DA}",
     "M": "!{#FFFF00}",
-    "GREY": "!{#AFAFAF}"
+    "GREY": "!{#AFAFAF}",
+    "TURN_ON": "!{#29EA14}",
+    "TURN_OFF": "!{#F81B20}"
 }

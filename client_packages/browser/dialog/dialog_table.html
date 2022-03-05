@@ -146,30 +146,28 @@
         function fillTitle(text){
             title.innerHTML = text
         }
-
+        
         function fillData(data){
-            /*
-            * {
+            
+           /*data= {
                 headers:[
-                    "TEXT"
+                    "TEXT", "qweqwe", "qweqwe"
                 ],
                 cols:[
-                    [txt11, txt12],
-                    [txt21, txt22]
+                    [JSON.parse(data1).cols[0][0], 'txt12', 'txt13'],
                 ]
             }
-            *
             */
+            
             let text = "<tbody><tr>"
             data = JSON.parse(data)
-            mp.gui.chat.push(data)
             data.headers.forEach(e => {
                 text += "<th>"+e+"</th>"
             })
             text += "</tr></tbody>"
             //table_headers.innerHTML = text
            
-            data.cols.forEach((e, i) => {
+            data.cols.forEach(e => {
                 text += "<tr>"
                 e.forEach(d => {
                     if(d.c)

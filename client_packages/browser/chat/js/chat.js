@@ -110,6 +110,7 @@ $(document).ready(function()
     chatAPI.update()
     hide();
     $(".ui_element").show();
+<<<<<<< HEAD
     pushWelcomeMessage();
     chat.previous.push(' ');
     $("body").keydown(function(event)
@@ -130,6 +131,27 @@ $(document).ready(function()
                     chat.previous = chat.previous.reverse()
                     if (value[0] == "/") {
                         value = value.substr(1);
+=======
+    
+    for(let i = 0; i < 20; i++)
+        chatApi.push(" ")
+
+    $("body").keydown(function(event)
+    {
+        mp.gui.chat.push(event.which + " SUCK PLS")
+        if ((event.which == 84 || event.which == 117) && (chat.input != null && chat.active == false)) {
+            enableChatInput(true);
+            event.preventDefault();
+            show();
+        }
+        else if (event.which == 13 && chat.input != null) {
+            var value = chat.input.children("input").val();
+
+            if (value.length > 0) {
+                chat.previous = value;
+                if (value[0] == "/") {
+                    value = value.substr(1);
+>>>>>>> origin/master
 
                         if (value.length > 0 && value.length <= 100){
                             if (value.match(/fontsize (.+)/)){
@@ -178,6 +200,18 @@ $(document).ready(function()
                     chat.previous_count = chat.previous_count - 1;
                 }
             }
+<<<<<<< HEAD
+=======
+            enableChatInput(false);
+            hide();
+        }
+        else if ((event.which == 27 || event.which == 117) && chat.input != null) {
+            enableChatInput(false);
+            hide();
+        }
+        else if (event.which == 38 && chat.input != null) {
+            chat.input.children("input").val(chat.previous);
+>>>>>>> origin/master
         }
     });
 });

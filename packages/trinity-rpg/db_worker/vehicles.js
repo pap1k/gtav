@@ -1,18 +1,20 @@
 const Vehicle = require("./db_models/Vehicle")
 
 module.exports = {
-    getAll: async () => {
-        const v = await Vehicle.find()
-        return v
+    getAll: () => {
+        return Vehicle.find()
     },
-    getByUid: async (veh) => {
+    getByUid: async (uid) => {
         
     },
-    create: async (veh, uid) => {
-        return new Vehicle({
-            name: "CARCAR",
-            owner: uid,
+    create: async (veh, owner, vehname) => {
+        const v = await new Vehicle({
+            name: vehname,
+            spawned: true,
+            owner: owner,
             vehType: veh
-        })
+        }).save()
+        console.log(v)
+        return v
     }
 }

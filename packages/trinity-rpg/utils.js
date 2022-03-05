@@ -37,8 +37,6 @@ exports.findPlayerByUid = function (uid){
     return found
 }
 
-// [ML] (script) chatcolor.lua: -10270721   A: _geroin_ áûë ñëàïíóò àäìèíèñòðàòîðîì papercut.
-// [ML] (script) chatcolor.lua: -6723841   [A] papercut: sory
 exports.log = function(text, type){
     if(!type) type = "info"
     let color

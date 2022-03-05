@@ -20,7 +20,11 @@ module.exports = {
     },
     
     getByUid: async function (player){
-        const o  = await Player.findOne({_id: player.getVariable("uid")})
+        let o
+        if(typeof player == "string")
+            o  = await Player.findOne({_id: player})
+        else
+            o  = await Player.findOne({_id: player.getVariable("uid")})
         return o
     },
     

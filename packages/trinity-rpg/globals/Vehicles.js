@@ -724,16 +724,45 @@ const vehicleHashes = {
     youga3: 0x6b73a9be
 }
 const Vehicles = Object.entries(vehicleHashes)
-
+const parking_db =  require("../db_worker/parkings")
+const utils = require("../utils")
 const vehicles = require("../db_worker/vehicles")
-let loaded
+let loaded = []
 
 async function fill(){
     loaded = await vehicles.getAll()
-    console.log("fill", loaded)
+    parks = await parking_db.getAll()
+    parks.forEach(park => {
+        if(park.carid != "none")
+        loaded.forEach(car => {
+            if(car._id == park.carid){
+                spawn(car._id, new mp.Vector3(park.coords.x, park.coords.y, park.coords.z), car.vehType)
+            }
+        })
+    })
+    utils.log("Vehicles Loaded", "done")
 } 
 
 fill()
+
+function spawn(carid, pos){
+    let v
+    loaded.forEach(c => {
+        if(c._id == carid)
+            return v = c
+    })
+    let newveh = mp.vehicles.new(v.vehType, pos)
+    let playername = "no"
+    mp.players.forEach(player => {
+        if(player.getVariable("uid") == v.owner)
+            return playername = player.name
+    })
+    newveh.setVariable("uid" , v._id)
+    newveh.setVariable("owner", v.owner)
+    newveh.setVariable("owner_name", playername)
+    newveh.setVariable("name", v.name)
+    newveh.setVariable("spawntime", Date.now())
+}
 
 module.exports = {
     Vehicles,
@@ -745,8 +774,12 @@ module.exports = {
             if(veh.startsWith(name))
                 return vehicleHashes[veh]
     },
-    spawn: (veh, pos) => {
-        loaded.push(vehicles.create(veh, pos))
-        mp.vehicles.new(veh, pos)
-    }
+    getLoaded: () => loaded,
+    create: (veh, pos, owner) => {
+        vehicles.create(veh, owner, "CARCAR").then(v => {
+            loaded.push(v)//not working
+            spawn(v._id, pos)
+        })
+    },
+    spawn,
 }
