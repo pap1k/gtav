@@ -21,4 +21,5 @@ start().then((v) => {
   require("./structures/fraction/commands/main");
   require("./events/main");
   require("./globals/loader");
+  Player.prototype.outputChatBox = (msg) => player.call("Send_ToChat", msg);
 });
