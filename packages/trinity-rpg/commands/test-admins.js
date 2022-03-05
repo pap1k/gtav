@@ -312,5 +312,18 @@ exports.obj = [
         execute: () => {
             console.log(Veh.getLoaded())
         }
+    },
+    {triggers: "money",
+        lvl: lvls.ADMIN_LEVEL_4,
+        hint: "/money [ID или часть ника] [сумма]",
+        target: true,
+        execute: function(player, _, target, sum)
+        {
+            if(isNaN(parseInt(sum))) return player.outputChatBox(colors.GREY+"Сумма должна быть числом")
+            target.call("givemoney",[sum])
+            target.outputChatBox(colors.A+`Администратор ${player.name} выдал вам сумму ${sum}`)
+            player.outputChatBox(colors.A+`Вы выдали игроку ${target.name} сумму в размере ${sum} `)
+        }
+           
     }
 ]
